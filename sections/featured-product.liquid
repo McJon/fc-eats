@@ -1,5 +1,32 @@
+{% case section.settings.add_to_cart_width %}
+  {% when 'small' %}
+    {%- assign btn_class = 'btn--wide' -%}
+    {%- assign productform_class = 'product-form--wide' -%}
+  {% when 'medium' %}
+    {%- assign btn_class = 'btn--wide' -%}
+    {%- assign productform_class = 'product-form--wide' -%}
+  {% when 'large' %}
+    {%- assign btn_class = 'btn--full' -%}
+    {%- assign productform_class = 'product-form--full' -%}
+{% endcase %}
+
+{% if section.settings.add_to_cart_width != 'small' %}
+  <style>
+    @media screen and (min-width: 769px){
+      #ProductSection-{{ section.id }} .single-option-selector,
+      #ProductSection-{{ section.id }} .quantity-selector {
+        {% if section.settings.add_to_cart_width == 'medium' %}
+          min-width: 50%;
+        {% else %}
+          min-width: 100%;
+        {% endif %}
+      }
+    }
+  </style>
+{% endif %}
+
 {%- assign product = all_products[section.settings.featured_product] -%}
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
 
 {%- if product == empty -%}
   {%- assign section_onboarding = true -%}
@@ -11,82 +38,98 @@
   {%- assign section_onboarding = false -%}
   {%- assign vendor = product.vendor -%}
   {%- assign title = product.title -%}
-  {%- assign compare_at_price = current_variant.compare_at_price -%}
-  {%- assign price = current_variant.price -%}
+  {%- assign compare_at_price = variant.compare_at_price -%}
+  {%- assign price = variant.price -%}
 {%- endif -%}
 
-{%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
-<div itemscope itemtype="http://schema.org/Product" id="FeaturedProductSection--{{ section.id }}"
-  data-section-id="{{ section.id }}"
-  data-section-type="product-template"
-  data-enable-history-state="false"
-  data-featured-product="true"
-  {% if first_3d_model %}data-has-model="true"{% endif %}>
-  <div class="wrapper">
-    <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
-    <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+<div itemscope itemtype="http://schema.org/Product" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product-template" data-image-zoom-type="{{ section.settings.product_image_zoom_type }}">
 
-    <div class="grid product-single">
-      <div class="grid__item large--seven-twelfths medium--seven-twelfths text-center">
-        <div class="product-single__media-group-wrapper product-single__media-group-wrapper--featured" data-product-single-media-group-wrapper>
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  <div class="section-header section-header--breadcrumb">
+    {% include 'breadcrumb' %}
+  </div>
+
+  <div class="product-single">
+    <div class="grid product-single__hero">
+      <div class="grid__item post-large--one-half">
+
+        <div class="product-single__photos">
           {% unless section_onboarding %}
-            {%- unless product.media.size == 0 -%}
-              <div class="product-single__media-group product-single__media-group--single-xr" data-product-single-media-group>
-                {%- assign height = 800 -%}
-                {%- assign width = 700 -%}
-                {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
-                {%- assign rendered_media_ids = '' -%}
+            {% assign featured_image = variant.featured_image | default: product.featured_image %}
 
-                {%- unless product.has_only_default_variant -%}
-                  {%- for variant in product.variants -%}
-                    {%- assign variant_media = variant.featured_media -%}
+            {% for image in product.images %}
+              {% capture img_id %}ProductImage-{{ image.id }}{% endcapture %}
+              {% capture img_wrapper_id %}ProductImageWrapper-{{ image.id }}{% endcapture %}
+              {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              {% include 'image-style' with image: image, small_style: false, width: 700, height: 1024, wrapper_id: img_wrapper_id, img_id: img_id %}
 
-                    {%- if variant_media -%}
-                      {%- if rendered_media_ids contains variant_media.id -%}
-                        {%- continue -%}
-                      {%- endif -%}
-
-                      {%- assign featured = false -%}
-                      {%- if variant_media == featured_media -%}
-                        {%- assign featured = true -%}
-                      {%- endif -%}
-
-                      {%- assign rendered_media_ids = rendered_media_ids | append: variant_media.id | append: ' ' -%}
-                      {% include 'media' with variant_media, enable_image_zoom: false, stacked: false, featured: featured, width: width, height: height %}
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endunless -%}
-
-                {%- unless featured_media and rendered_media_ids contains featured_media.id -%}
-                  {% include 'media' with featured_media, enable_image_zoom: false, stacked: false, featured: true, width: width, height: height %}
-                {%- endunless -%}
+              <div id="{{ img_wrapper_id }}" class="product-single__image-wrapper supports-js{% unless featured_image == image %} hide{% endunless %}{% if section.settings.product_image_zoom_type == 'lightbox' %} zoom-lightbox{% endif %}" data-image-id="{{ image.id }}">
+                <div style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%;">
+                  <img id="{{ img_id }}"
+                        class="product-single__image lazyload{% unless featured_image == image %} lazypreload{% endunless %}"
+                        {% if featured_image == image %}src="{{ image | img_url: '300x300' }}"{% endif %}
+                        data-src="{{ img_url }}"
+                        data-widths="[180, 370, 540, 740, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ image.aspect_ratio }}"
+                        data-sizes="auto"
+                        {% if section.settings.product_image_zoom_type == 'zoom-in' %} data-zoom="{{ image | img_url: '1024x1024', scale: 2 }}"{% endif %}
+                        alt="{{ image.alt | escape }}">
+                </div>
               </div>
-              {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
-              {%- if first_3d_model -%}
-                {%- include 'xr-button' with model_id: first_3d_model.id, multi: false -%}
-              {%- endif -%}
-            {%- endunless -%}
+            {% endfor %}
+
+            <noscript>
+              <img src="{{ featured_image | img_url: '1024x1024', scale: 2 }}" alt="{{ featured_image.alt | escape }}">
+            </noscript>
           {% else %}
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endunless %}
         </div>
-      </div>
 
-      <div class="grid__item product-single__meta--wrapper medium--five-twelfths large--five-twelfths">
-        {% if section.settings.show_vendor %}
-          <h2 class="product-single__vendor" itemprop="brand">{{ vendor }}</h2>
+        {% if section.settings.product_image_zoom_type == 'lightbox' %}
+          <ul class="gallery" class="hidden">
+            {% for image in product.images %}
+              <li data-image-id="{{ image.id }}" class="gallery__item" data-mfp-src="{{ image | img_url: '1024x1024', scale: 2 }}"></li>
+            {% endfor %}
+          </ul>
         {% endif %}
 
+      </div>
+      <div class="grid__item post-large--one-half">
+        {% if section.settings.product_vendor_enable %}
+          <span class="h3" itemprop="brand">{{ vendor }}</span>
+        {% endif %}
         <h1 class="product-single__title" itemprop="name">{{ title }}</h1>
 
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-          {% comment %}
-            Optionally show the 'compare at' or original price of the product.
-          {% endcomment %}
-          {% include 'product-price', variant: current_variant %}
+
+          <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+          <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+          <div class="product-single__prices{% if shop.taxes_included or shop.shipping_policy.body != blank %} product-single__prices--policy-enabled{% endif %}">
+            {% if compare_at_price > price %}
+              <span id="ComparePriceA11y" class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+            {% else %}
+              <span id="PriceA11y" class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+            {% endif %}
+            <span id="ProductPrice" class="product-single__price" itemprop="price" content="{{ price | divided_by: 100.00 }}">
+              {{ price | money }}
+            </span>
+
+            {% if compare_at_price > price %}
+              <span id="PriceA11y" class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+              <s id="ComparePrice" class="product-single__sale-price">
+                {{ compare_at_price | money }}
+              </s>
+            {% endif %}
+
+            {% include 'product-unit-price', variant: variant, available: true %}
+          </div>
 
           {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
-            <div class="product-single__policies rte">
+            <div class="product-single__policies{% if product.has_only_default_variant and section.settings.product_quantity_enable == false %} product__policies--no-dropdowns{% endif %} rte">
               {%- if shop.taxes_included -%}
                 {{ 'products.general.include_taxes' | t }}
               {%- endif -%}
@@ -96,69 +139,14 @@
             </div>
           {%- endif -%}
 
-          <hr class="hr--small">
-
-          <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
-          <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
-
-          {% if section_onboarding %}
-            <div class="product-single__add-to-cart default-product">
-              <button type="submit" name="add" id="AddToCart--{{ section.id }}" class="btn btn--add-to-cart" disabled="disabled">
-                <span class="btn__text">
-                  {{ 'products.product.sold_out' | t }}
-                </span>
-              </button>
-            </div>
-          {% else %}
-            {% capture "form_classes" %}
-              product-single__form{% if product.has_only_default_variant %} product-single__form--no-variants{% endif %}
-            {%- endcapture %}
-
-            {% capture "form_id" %}AddToCartForm--{{ section.id }}{%- endcapture %}
-
-            {% form 'product', product, class:form_classes, id:form_id, data-product-form: '' %}
-              {% unless product.has_only_default_variant %}
-                {% for option in product.options_with_values %}
-                  <div class="radio-wrapper js product-form__item">
-                    <label class="single-option-radio__label{% if section.settings.show_variant_labels == false %} hidden-label{% endif %}"
-                      for="ProductSelect--{{ section.id }}-option-{{ forloop.index0 }}">
-                      {{ option.name | escape }}
-                    </label>
-                    <fieldset class="single-option-radio"
-
-                      id="ProductSelect--{{ section.id }}-option-{{ forloop.index0 }}">
-                      {% assign option_index = forloop.index %}
-                      {% for value in option.values %}
-                        {% assign variant_label_state = true %}
-                        {% if product.options.size == 1 %}
-                          {% unless product.variants[forloop.index0].available  %}
-                            {% assign variant_label_state = false %}
-                          {% endunless %}
-                        {% endif %}
-                        <input type="radio"
-                          {% if option.selected_value == value %} checked="checked"{% endif %}
-                          {% unless variant_label_state %} disabled="disabled"{% endunless %}
-                          value="{{ value | escape }}"
-                          data-index="option{{ option_index }}"
-                          name="option{{ option.position }}"
-                          class="single-option-selector__radio{% unless variant_label_state %} disabled{% endunless %}"
-                          id="ProductSelect--{{ section.id }}-option-{{ option.name | handleize }}-{{ value | escape }}">
-                        <label for="ProductSelect--{{ section.id }}-option-{{ option.name | handleize }}-{{ value | escape }}"{% unless variant_label_state %} class="disabled"{% endunless %}>{{ value | escape }}</label>
-                      {% endfor %}
-                    </fieldset>
-                  </div>
-                {% endfor %}
-              {% endunless %}
-
-              <select name="id" id="ProductSelect--{{ section.id }}" class="product-single__variants no-js">
+          {% unless product == empty %}
+            {% form 'product', product, class:productform_class %}
+              <select name="id" id="ProductSelect-{{ section.id }}" class="product-single__variants">
                 {% for variant in product.variants %}
                   {% if variant.available %}
-                    <option {% if variant == product.selected_or_first_available_variant %}
-                      selected="selected" {% endif %}
-                      data-sku="{{ variant.sku }}"
-                      value="{{ variant.id }}">
-                      {{ variant.title }} - {{ variant.price | money_with_currency }}
-                    </option>
+
+                    <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+
                   {% else %}
                     <option disabled="disabled">
                       {{ variant.title }} - {{ 'products.product.sold_out' | t }}
@@ -167,48 +155,46 @@
                 {% endfor %}
               </select>
 
-              <div class="product-single__add-to-cart">
-                <button type="submit" name="add" id="AddToCart--{{ section.id }}" class="btn btn--add-to-cart{% if section.settings.enable_payment_button %} btn--secondary-accent{% endif %}"{% unless current_variant.available %} disabled="disabled"{% endunless %}>
-                  <span class="btn__text">
-                    {% if current_variant.available %}
-                      {{ 'products.product.add_to_cart' | t }}
-                    {% else %}
-                      {{ 'products.product.sold_out' | t }}
-                    {% endif %}
-                  </span>
-                </button>
-                {% if section.settings.enable_payment_button %}
-                  {{ form | payment_button }}
-                {% endif %}
+              <div class="product-single__quantity{% unless section.settings.product_quantity_enable %} is-hidden{% endunless %}">
+                <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
               </div>
+
+              <button type="submit" name="add" id="AddToCart" class="btn {{ btn_class }}{% if section.settings.enable_payment_button %} btn--secondary{% endif %}"{% unless current_variant.available %} disabled="disabled"{% endunless %}>
+                <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+              </button>
+              {% if section.settings.enable_payment_button %}
+                {{ form | payment_button }}
+              {% endif %}
             {% endform %}
+          {% else %}
+            <form>
+              <button type="submit" name="add" id="AddToCart" class="btn {{ btn_class }}{% if section.settings.enable_payment_button %} btn--secondary{% endif %}"{% unless current_variant.available %} disabled="disabled"{% endunless %}>
+                <span>{{ 'products.product.add_to_cart' | t }}</span>
+              </button>
+            </form>
+          {% endunless %}
+
+          <a class="product-single__full-details text-link"{% unless section_onboarding %} href="{{ product.url }}?variant={{ variant.id }}"{% endunless %}>
+            {{ 'products.product.full_details' | t }} &#x2192;
+          </a>
+
+          {% if section.settings.social_sharing %}
+            <hr class="hr--clear hr--small">
+            <h2 class="h4">{{ 'products.general.share_title' | t }}</h2>
+            {% include 'social-sharing' %}
           {% endif %}
         </div>
 
-        <a class="product-single__full-details text-link"{% unless section_onboarding %} href="{{ product.url }}?variant={{ current_variant.id }}"{% endunless %}>
-          {{ 'products.product.full_details' | t }} <span class="icon icon-arrow-right" aria-hidden="true"></span>
-        </a>
-
-        {% if section.settings.show_share_buttons %}
-          {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
-        {% endif %}
       </div>
     </div>
-
-    {% if collection %}
-      <hr class="hr--clear">
-      <div class="text-center">
-        <a href="{{ collection.url }}" class="return-link">&larr; {{ 'products.general.collection_return' | t: collection: collection.title }}</a>
-      </div>
-    {% endif %}
   </div>
+
 </div>
-{% unless product.empty == empty %}
+
+{% unless product == empty %}
   <script type="application/json" id="ProductJson-{{ section.id }}">
     {{ product | json }}
-  </script>
-  <script type="application/json" id="ModelJson-{{ section.id }}">
-    {{ product.media | where: 'media_type', 'model' | json }}
   </script>
 {% endunless %}
 
@@ -223,7 +209,7 @@
     "en": "Featured product",
     "es": "Producto destacado",
     "fi": "Esittelyssä oleva tuote",
-    "fr": "Produit en vedette",
+    "fr": "Produit vedette",
     "it": "Prodotto in primo piano",
     "ja": "おすすめ商品",
     "ko": "특별 상품",
@@ -239,6 +225,7 @@
     "zh-CN": "特色产品",
     "zh-TW": "精選產品"
   },
+  "class": "index-section",
   "settings": [
     {
       "type": "product",
@@ -246,7 +233,7 @@
       "label": {
         "cs": "Produkt",
         "da": "Produkt",
-        "de": "Produkt",
+        "de": "Produkte",
         "en": "Product",
         "es": "Producto",
         "fi": "Tuote",
@@ -269,39 +256,11 @@
     },
     {
       "type": "checkbox",
-      "id": "show_variant_labels",
-      "label": {
-        "cs": "Zobrazit popisky variant",
-        "da": "Vis variantlabels",
-        "de": "Variantenbezeichnungen anzeigen",
-        "en": "Show variant labels",
-        "es": "Mostrar etiquetas variantes",
-        "fi": "Näytä tarravaihtoehdot",
-        "fr": "Afficher les étiquettes de variantes",
-        "it": "Mostra etichette varianti",
-        "ja": "バリエーションのラベルを表示する",
-        "ko": "이형 상품 레이블 표시",
-        "nb": "Vis variantetiketter",
-        "nl": "Variantlabels weergeven",
-        "pl": "Pokaż etykiety wariantów",
-        "pt-BR": "Exibir etiquetas de variantes",
-        "pt-PT": "Mostrar etiquetas de variantes",
-        "sv": "Visa variantetiketter",
-        "th": "แสดงป้ายกำกับตัวเลือกสินค้า",
-        "tr": "Varyasyon etiketlerini göster",
-        "vi": "Hiển thị nhãn mẫu mã",
-        "zh-CN": "显示多属性标签",
-        "zh-TW": "顯示子類選項標籤"
-      },
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
+      "id": "product_vendor_enable",
       "label": {
         "cs": "Zobrazit dodavatele",
         "da": "Vis leverandør",
-        "de": "Anbieter anzeigen",
+        "de": "Lieferanten anzeigen",
         "en": "Show vendor",
         "es": "Mostrar proveedor",
         "fi": "Näytä myyjä",
@@ -320,8 +279,218 @@
         "vi": "Hiển thị nhà cung cấp",
         "zh-CN": "显示厂商",
         "zh-TW": "顯示廠商"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "product_quantity_enable",
+      "label": {
+        "cs": "Zobrazit výběr množství",
+        "da": "Vis antalsvælger",
+        "de": "Mengenauswahl anzeigen",
+        "en": "Show quantity selector",
+        "es": "Mostrar selector de cantidad",
+        "fi": "Näytä määrän valitsin",
+        "fr": "Afficher le sélecteur de quantité",
+        "it": "Mostra selettore quantità",
+        "ja": "数量セレクターを表示する",
+        "ko": "수량 선택기 표시",
+        "nb": "Vis mengdevelger",
+        "nl": "Hoeveelheidskiezer weergeven",
+        "pl": "Pokaż selektor ilości",
+        "pt-BR": "Exibir seletor de quantidade",
+        "pt-PT": "Mostrar um seletor de quantidade",
+        "sv": "Visa kvantitetsväljare",
+        "th": "แสดงตัวเลือกจำนวน",
+        "tr": "Adet seçiciyi göster",
+        "vi": "Hiển thị hộp chọn số lượng",
+        "zh-CN": "显示数量选择器",
+        "zh-TW": "顯示數量選擇器"
+      }
+    },
+    {
+      "type": "select",
+      "id": "product_image_zoom_type",
+      "label": {
+        "cs": "Typ zvětšení obrázku",
+        "da": "Billedzoomtype",
+        "de": "Bildzoomtyp",
+        "en": "Image zoom type",
+        "es": "Tipo de zoom de imagen",
+        "fi": "Kuvan zoomaustyyppi",
+        "fr": "Type de zoom sur image",
+        "it": "Tipo di zoom immagine",
+        "ja": "画像のズームタイプ",
+        "ko": "이미지 확대 유형",
+        "nb": "Zoomtype for bilder",
+        "nl": "Type zoom-afbeelding",
+        "pl": "Typ powiększenia obrazu",
+        "pt-BR": "Tipo de zoom da imagem",
+        "pt-PT": "Tipo de zoom da imagem",
+        "sv": "Bildzoomtyp",
+        "th": "ประเภทการซูมภาพ",
+        "tr": "Görsel yakınlaştırma türü",
+        "vi": "Kiểu thu phóng hình ảnh",
+        "zh-CN": "图片缩放类型",
+        "zh-TW": "圖片縮放類型"
       },
-      "default": false
+      "options": [
+        {
+          "value": "lightbox",
+          "label": {
+            "cs": "Lightbox",
+            "da": "Lightbox",
+            "de": "Leuchtkasten",
+            "en": "Lightbox",
+            "es": "Lightbox",
+            "fi": "Lightbox-valotaulu",
+            "fr": "Visionneuse d'image",
+            "it": "Lightbox",
+            "ja": "Lightbox",
+            "ko": "라이트 박스",
+            "nb": "Lysboks",
+            "nl": "Lightbox",
+            "pl": "Lightbox",
+            "pt-BR": "Lightbox",
+            "pt-PT": "Lightbox",
+            "sv": "Ljuslåda",
+            "th": "Lightbox",
+            "tr": "Lightbox",
+            "vi": "Lightbox",
+            "zh-CN": "灯箱",
+            "zh-TW": "燈箱"
+          }
+        },
+        {
+          "value": "zoom-in",
+          "label": {
+            "cs": "Přiblížení",
+            "da": "Zoom ind",
+            "de": "Heranzoomen",
+            "en": "Zoom-in",
+            "es": "Acercar",
+            "fi": "Lähennä",
+            "fr": "Zoom avant",
+            "it": "Zoom avanti",
+            "ja": "ズームイン",
+            "ko": "확대",
+            "nb": "Zoom inn",
+            "nl": "Inzoomen",
+            "pl": "Powiększ",
+            "pt-BR": "Mais zoom",
+            "pt-PT": "Mais zoom",
+            "sv": "Zooma in",
+            "th": "ซูมเข้า",
+            "tr": "Yakınlaştırma",
+            "vi": "Phóng to",
+            "zh-CN": "缩小",
+            "zh-TW": "放大"
+          }
+        },
+        {
+          "value": "no-zoom",
+          "label": {
+            "cs": "Bez zvětšení",
+            "da": "Ingen zoom",
+            "de": "Nicht zoomen",
+            "en": "No zoom",
+            "es": "Sin zoom",
+            "fi": "Ei zoomausta",
+            "fr": "Pas de zoom",
+            "it": "Nessun zoom",
+            "ja": "ズームなし",
+            "ko": "확대 없음",
+            "nb": "Ingen zoom",
+            "nl": "Geen zoom",
+            "pl": "Bez powiększenia",
+            "pt-BR": "Sem zoom",
+            "pt-PT": "Sem zoom",
+            "sv": "Ingen zoom",
+            "th": "ไม่มีการซูม",
+            "tr": "Yakınlaştırma yok",
+            "vi": "Không thu phóng",
+            "zh-CN": "无缩放",
+            "zh-TW": "無縮放"
+          }
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "social_sharing",
+      "label": {
+        "cs": "Zobrazit tlačítka pro sdílení na sociálních sítích",
+        "da": "Vis knapper til deling på sociale medier",
+        "de": "Social-Sharing-Schaltflächen anzeigen",
+        "en": "Show social sharing buttons",
+        "es": "Mostrar botones para compartir en redes sociales",
+        "fi": "Näytä sosiaalisen median jakamispainikkeet",
+        "fr": "Afficher les boutons de partage social",
+        "it": "Mostra i pulsanti per la condivisione sui social",
+        "ja": "ソーシャルメディアでの共有ボタンを表示する",
+        "ko": "소셜 공유 버튼 표시",
+        "nb": "Vis knapper for deling på sosiale medier",
+        "nl": "Knoppen voor sociaal delen weergeven",
+        "pl": "Pokaż przyciski udostępniania w mediach społecznościowych",
+        "pt-BR": "Exibir botões de compartilhamento em redes sociais",
+        "pt-PT": "Mostrar botões de partilha nas redes sociais",
+        "sv": "Visa knappar för delning i sociala medier",
+        "th": "แสดงปุ่มสำหรับแชร์ลงโซเชียล",
+        "tr": "Sosyal medya paylaşım düğmelerini göster",
+        "vi": "Hiển thị nút chia sẻ qua mạng xã hội",
+        "zh-CN": "显示社交分享按钮",
+        "zh-TW": "顯示社群分享按鈕"
+      },
+      "default": true,
+      "info": {
+        "cs": "Upravit účty na sociálních sítích v obecném nastavení",
+        "da": "Rediger SoMe-konti i Generelle indstillinger",
+        "de": "Bearbeite Social-Media-Konten in den allgemeinen Einstellungen",
+        "en": "Edit social accounts in General settings",
+        "es": "Editar cuentas de las redes sociales en la configuración General",
+        "fi": "Muokkaa sosiaalisen median tilejä kohdassa Yleiset asetukset",
+        "fr": "Modifier les comptes sociaux dans les paramètres généraux",
+        "it": "Modifica gli account social nelle Impostazioni generali",
+        "ja": "一般設定でSNSアカウントを編集する",
+        "ko": "일반 설정에서 소셜 계정 수정",
+        "nb": "Rediger sosiale kontoer i Generelle innstillinger",
+        "nl": "Socialmedia-accounts in Algemene instellingen bewerken",
+        "pl": "Edytuj konta społecznościowe w ustawieniach ogólnych",
+        "pt-BR": "Edite as contas de redes sociais nas Configurações gerais",
+        "pt-PT": "Editar as contas de redes sociais nas definições gerais",
+        "sv": "Redigera sociala konton i Allmänna inställningar",
+        "th": "แก้ไขบัญชีผู้ใช้โซเชียลมีเดียในการตั้งค่าทั่วไป",
+        "tr": "Genel ayarlardan sosyal medya hesaplarını düzenleyin",
+        "vi": "Chỉnh sửa tài khoản mạng xã hội trong Cài đặt chung",
+        "zh-CN": "在“通用”设置中编辑社交媒体账户",
+        "zh-TW": "前往「一般」設定編輯社群帳戶"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "cs": "Formulář produktových variant",
+        "da": "Formular for produktmuligheder",
+        "de": "Produktoptionsformular",
+        "en": "Product options form",
+        "es": "Formulario de opciones de producto",
+        "fi": "Tuotevaihtoehtolomake",
+        "fr": "Formulaire d'options de produit",
+        "it": "Modulo delle opzioni di prodotto",
+        "ja": "商品オプションのフォーム",
+        "ko": "제품 옵션 양식",
+        "nb": "Skjema for produktalternativer",
+        "nl": "Formulier productopties",
+        "pl": "Formularz opcji produktu",
+        "pt-BR": "Formulário de opções de produtos",
+        "pt-PT": "Formulário de opções de produtos",
+        "sv": "Produktalternativsformulär",
+        "th": "แบบฟอร์มตัวเลือกสินค้า",
+        "tr": "Ürün seçenekleri formu",
+        "vi": "Biểu mẫu tùy chọn sản phẩm",
+        "zh-CN": "产品选项表单",
+        "zh-TW": "產品選項表單"
+      }
     },
     {
       "type": "checkbox",
@@ -329,7 +498,7 @@
       "label": {
         "cs": "Zobrazit dynamické tlačítko pokladny",
         "da": "Vis dynamisk betalingsknap",
-        "de": "Dynamischen Checkout-Button anzeigen",
+        "de": "Dynamischen Checkout Button anzeigen",
         "en": "Show dynamic checkout button",
         "es": "Mostrar botón de pago dinámico",
         "fi": "Näytä dynaaminen kassapainike",
@@ -375,132 +544,112 @@
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "show_share_buttons",
+      "type": "select",
+      "id": "add_to_cart_width",
       "label": {
-        "cs": "Zobrazit tlačítka pro sdílení na sociálních sítích",
-        "da": "Vis knapper til deling på sociale medier",
-        "de": "Social-Sharing-Schaltflächen anzeigen",
-        "en": "Show social sharing buttons",
-        "es": "Mostrar botones para compartir en redes sociales",
-        "fi": "Näytä sosiaalisen median jakamispainikkeet",
-        "fr": "Afficher les boutons de partage social",
-        "it": "Mostra i pulsanti per la condivisione sui social",
-        "ja": "ソーシャルメディアでの共有ボタンを表示する",
-        "ko": "소셜 공유 버튼 표시",
-        "nb": "Vis knapper for deling på sosiale medier",
-        "nl": "Knoppen voor sociaal delen weergeven",
-        "pl": "Pokaż przyciski udostępniania w mediach społecznościowych",
-        "pt-BR": "Exibir botões de compartilhamento em redes sociais",
-        "pt-PT": "Mostrar botões de partilha nas redes sociais",
-        "sv": "Visa knappar för delning i sociala medier",
-        "th": "แสดงปุ่มสำหรับแชร์ลงโซเชียล",
-        "tr": "Sosyal medya paylaşım düğmelerini göster",
-        "vi": "Hiển thị nút chia sẻ qua mạng xã hội",
-        "zh-CN": "显示社交分享按钮",
-        "zh-TW": "顯示社群分享按鈕"
+        "cs": "Velikost selektoru variant a tlačítek",
+        "da": "Variantvælger og knapstørrelse",
+        "de": "Variantenauswahl und Schaltflächengröße",
+        "en": "Variant picker and button size",
+        "es": "Selector de variantes y tamaño del botón",
+        "fi": "Versionvalitsin ja painikkeen koko",
+        "fr": "Sélecteur de variante et taille du bouton",
+        "it": "Dimensione selettore variante e pulsante",
+        "ja": "バリエーションピッカーとボタンサイズ",
+        "ko": "이형 상품 선택기 및 버튼 사이즈",
+        "nb": "Variantvelger og knappestørrelse",
+        "nl": "Variantkiezer en knopgrootte",
+        "pl": "Rozmiar selektora wariantów i przycisku",
+        "pt-BR": "Tamanho do botão e do seletor de variante",
+        "pt-PT": "Tamanho dos botões e seletor de variante",
+        "sv": "Variantväljare och knappstorlek",
+        "th": "รายการเครื่องมือเลือกสินค้าและขนาดของปุ่ม",
+        "tr": "Varyasyon seçici ve düğme boyutu",
+        "vi": "Trình chọn mẫu mã và cỡ nút",
+        "zh-CN": "多属性选择器和按钮大小",
+        "zh-TW": "子類選項選擇器和按鈕尺寸"
       },
-      "default": true,
-      "info": {
-        "cs": "Upravit účty na sociálních sítích v obecném nastavení",
-        "da": "Rediger SoMe-konti i Generelle indstillinger",
-        "de": "Bearbeite Social-Media-Konten in den allgemeinen Einstellungen",
-        "en": "Edit social accounts in General settings",
-        "es": "Editar cuentas de las redes sociales en la configuración General",
-        "fi": "Muokkaa sosiaalisen median tilejä kohdassa Yleiset asetukset",
-        "fr": "Modifier les comptes sociaux dans les paramètres généraux",
-        "it": "Modifica gli account social nelle Impostazioni generali",
-        "ja": "一般設定でSNSアカウントを編集する",
-        "ko": "일반 설정에서 소셜 계정 수정",
-        "nb": "Rediger sosiale kontoer i Generelle innstillinger",
-        "nl": "Socialmedia-accounts in Algemene instellingen bewerken",
-        "pl": "Edytuj konta społecznościowe w ustawieniach ogólnych",
-        "pt-BR": "Edite as contas de redes sociais nas configurações gerais",
-        "pt-PT": "Editar as contas de redes sociais nas definições gerais",
-        "sv": "Redigera sociala konton i Allmänna inställningar",
-        "th": "แก้ไขบัญชีผู้ใช้โซเชียลมีเดียในการตั้งค่าทั่วไป",
-        "tr": "Genel ayarlardan sosyal medya hesaplarını düzenleyin",
-        "vi": "Chỉnh sửa tài khoản mạng xã hội trong Cài đặt chung",
-        "zh-CN": "在“通用”设置中编辑社交媒体账户",
-        "zh-TW": "前往「一般」設定編輯社群帳戶"
-      }
-    },
-    {
-      "type": "header",
-      "content": {
-        "cs": "Multimédia",
-        "da": "Medie",
-        "de": "Medien",
-        "en": "Media",
-        "es": "Elementos multimedia",
-        "fi": "Media",
-        "fr": "Médias",
-        "it": "Media",
-        "ja": "メディア",
-        "ko": "미디어",
-        "nb": "Medier",
-        "nl": "Media",
-        "pl": "Multimedia",
-        "pt-BR": "Mídia",
-        "pt-PT": "Multimédia",
-        "sv": "Media",
-        "th": "สื่อ",
-        "tr": "Medya",
-        "vi": "Nội dung đa phương tiện",
-        "zh-CN": "媒体",
-        "zh-TW": "媒體"
-      },
-      "info": {
-        "cs": "Další informace o [typech multimédií](https://help.shopify.com/manual/products/product-media)",
-        "da": "Få mere at vide om [media types](https://help.shopify.com/manual/products/product-media)",
-        "de": "Mehr Informationen über [Medientypen ](https://help.shopify.com/manual/products/product-media)",
-        "en": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)",
-        "es": "Más información sobre [tipos de archivos multimedia](https://help.shopify.com/manual/products/product-media)",
-        "fi": "Lue lisää [mediatyypeistä](https://help.shopify.com/manual/products/product-media)",
-        "fr": "En savoir plus sur les [types de supports multimédia](https://help.shopify.com/manual/products/product-media)",
-        "it": "Scopri di più sulle [tipologie di file multimediali](https://help.shopify.com/manual/products/product-media)",
-        "ja": "[メディアのタイプ](https://help.shopify.com/manual/products/product-media) について詳しくはこちら",
-        "ko": "[미디어 유형](https://help.shopify.com/manual/products/product-media)에 대해 자세히 알아보기",
-        "nb": "Lær mer om [medietyper](https://help.shopify.com/manual/products/product-media)",
-        "nl": "Meer informatie over [mediatypen](https://help.shopify.com/manual/products/product-media)",
-        "pl": "Dowiedz się więcej o [typach multimediów](https://help.shopify.com/manual/products/product-media)",
-        "pt-BR": "Saiba mais sobre [tipos de mídia](https://help.shopify.com/manual/products/product-media)",
-        "pt-PT": "Saiba mais sobre [media types](https://help.shopify.com/manual/products/product-media)",
-        "sv": "Läs mer om [mediatyper](https://help.shopify.com/manual/products/product-media)",
-        "th": "ดูข้อมูลเพิ่มเติมเกี่ยวกับ [ประเภทของสื่อ](https://help.shopify.com/manual/products/product-media)",
-        "tr": "[Medya türleri](https://help.shopify.com/manual/products/product-media) hakkında daha fazla bilgi edinin",
-        "vi": "Tìm hiểu thêm về [loại phương tiện](https://help.shopify.com/manual/products/product-media)",
-        "zh-CN": "详细了解[媒体类型](https://help.shopify.com/manual/products/product-media)",
-        "zh-TW": "深入瞭解 [媒體類型](https://help.shopify.com/manual/products/product-media)"
-      }
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_video_looping",
-      "label": {
-        "cs": "Povolit smyčky videa",
-        "da": "Aktivér looping af videoer",
-        "de": "Videoschleife aktivieren",
-        "en": "Enable video looping",
-        "es": "Habilitar la reproducción de video en bucle",
-        "fi": "Ota käyttöön videosilmukka",
-        "fr": "Activer le bouclage de la vidéo",
-        "it": "Abilita la riproduzione in loop dei video",
-        "ja": "ビデオのループを有効にする",
-        "ko": "동영상 루프 활성화",
-        "nb": "Aktiver løkkeavspilling av video",
-        "nl": "Video-looping inschakelen",
-        "pl": "Włącz zapętlanie wideo",
-        "pt-BR": "Habilitar loop de vídeo",
-        "pt-PT": "Ativar ciclo de vídeo",
-        "sv": "Aktivera video-loopning",
-        "th": "เปิดใช้การวนซ้ำวิดีโอ",
-        "tr": "Video döngüsünü etkinleştir",
-        "vi": "Bật vòng lặp video",
-        "zh-CN": "启用视频循环",
-        "zh-TW": "啟用影片循環功能"
-      },
-      "default": false
+      "default": "small",
+      "options": [
+        {
+          "value": "small",
+          "label": {
+            "cs": "Malá",
+            "da": "Lille",
+            "de": "Klein",
+            "en": "Small",
+            "es": "Pequeño",
+            "fi": "Pieni",
+            "fr": "Petite",
+            "it": "Small",
+            "ja": "小",
+            "ko": "스몰",
+            "nb": "Liten",
+            "nl": "Klein",
+            "pl": "Mały",
+            "pt-BR": "Pequeno",
+            "pt-PT": "Pequeno",
+            "sv": "Liten",
+            "th": "เล็ก",
+            "tr": "Küçük",
+            "vi": "Nhỏ",
+            "zh-CN": "小",
+            "zh-TW": "小型"
+          }
+        },
+        {
+          "value": "medium",
+          "label": {
+            "cs": "Střední",
+            "da": "Medium",
+            "de": "Mitte",
+            "en": "Medium",
+            "es": "Mediano",
+            "fi": "Keskisuuri",
+            "fr": "Moyenne",
+            "it": "Medium",
+            "ja": "中",
+            "ko": "보통",
+            "nb": "Middels",
+            "nl": "Gemiddeld",
+            "pl": "Średni",
+            "pt-BR": "Médio",
+            "pt-PT": "Intermédio",
+            "sv": "Medium",
+            "th": "ปานกลาง",
+            "tr": "Orta",
+            "vi": "Trung bình",
+            "zh-CN": "中等",
+            "zh-TW": "中等"
+          }
+        },
+        {
+          "value": "large",
+          "label": {
+            "cs": "Velká",
+            "da": "Stor",
+            "de": "Groß",
+            "en": "Large",
+            "es": "Grande",
+            "fi": "Suuri",
+            "fr": "Grande",
+            "it": "Large",
+            "ja": "大",
+            "ko": "라지",
+            "nb": "Stor",
+            "nl": "Groot",
+            "pl": "Duży",
+            "pt-BR": "Grande",
+            "pt-PT": "Grande",
+            "sv": "Stor",
+            "th": "ใหญ่",
+            "tr": "Büyük",
+            "vi": "Lớn",
+            "zh-CN": "大",
+            "zh-TW": "大型"
+          }
+        }
+      ]
     }
   ],
   "presets": [
@@ -512,7 +661,7 @@
         "en": "Featured product",
         "es": "Producto destacado",
         "fi": "Esittelyssä oleva tuote",
-        "fr": "Produit en vedette",
+        "fr": "Produit vedette",
         "it": "Prodotto in primo piano",
         "ja": "おすすめ商品",
         "ko": "특별 상품",
@@ -529,24 +678,24 @@
         "zh-TW": "精選產品"
       },
       "category": {
-        "cs": "Produkt",
-        "da": "Produkt",
-        "de": "Produkt",
-        "en": "Product",
-        "es": "Producto",
-        "fi": "Tuote",
-        "fr": "Produit",
-        "it": "Prodotto",
-        "ja": "商品",
+        "cs": "Produkty",
+        "da": "Produkter",
+        "de": "Produkte",
+        "en": "Products",
+        "es": "Productos",
+        "fi": "Tuotteet",
+        "fr": "Produits",
+        "it": "Prodotti",
+        "ja": "商品について",
         "ko": "제품",
-        "nb": "Produkt",
-        "nl": "Product",
-        "pl": "Produkt",
-        "pt-BR": "Produto",
-        "pt-PT": "Produto",
-        "sv": "Produkt",
+        "nb": "Produkter",
+        "nl": "Producten",
+        "pl": "Produkty",
+        "pt-BR": "Produtos",
+        "pt-PT": "Produtos",
+        "sv": "Produkter",
         "th": "สินค้า",
-        "tr": "Ürün",
+        "tr": "Ürünler",
         "vi": "Sản phẩm",
         "zh-CN": "产品",
         "zh-TW": "產品"

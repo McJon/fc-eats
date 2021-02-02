@@ -1,10 +1,10 @@
-<div class="wrapper">
+<div class="page-width">
   {% if section.settings.heading != blank %}
-    <div class="section-header text-center">
-      <h2 class="h1 section-header__title">{{ section.settings.heading | escape }}</h2>
-      <hr class="hr--small">
+    <div class="section-header">
+      <h4 class="h2">{{ section.settings.heading | escape }}</h4>
     </div>
   {% endif %}
+
   <div class="grid">
     <div class="grid__item one-whole">
       <div class="video-wrapper">
@@ -15,14 +15,13 @@
             <iframe src="//www.youtube.com/embed/{{ section.settings.video_url.id }}?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
           {% endif %}
           {% if section.settings.video_url.type == "vimeo" %}
-            <iframe src="//player.vimeo.com/video/{{ section.settings.video_url.id }}?color={{ settings.color_secondary | remove: "#" }}&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+            <iframe src="//player.vimeo.com/video/{{ section.settings.video_url.id }}?color={{ settings.color_primary | remove: "#" }}&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
           {% endif %}
         {% endif %}
       </div>
     </div>
   </div>
 </div>
-
 
 
 {% schema %}
@@ -50,6 +49,7 @@
     "zh-CN": "视频",
     "zh-TW": "影片"
   },
+  "class": "index-section",
   "settings": [
     {
       "type": "text",
@@ -167,7 +167,7 @@
         "fi": "Video",
         "fr": "Vidéo",
         "it": "Video",
-        "ja": "動画",
+        "ja": "ビデオ",
         "ko": "동영상",
         "nb": "Video",
         "nl": "Video",

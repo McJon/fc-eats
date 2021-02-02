@@ -1,9 +1,10 @@
 {
   "general": {
     "accessibility": {
-      "refresh_page": "चुननेे पर पूरा पेज रीफ़्रेश हो जाएगा.",
+      "refresh_page": "चयन का चुनाव करने से पूरा पेज रीफ़्रेश हो जाएगा",
       "unit_price_separator": "प्रति",
-      "selection_help": "चुनने के लिए स्पेस कुंजी दबाएं, फिर तीर कुंजी दबाएं."
+      "new_window": "नए विंडो में खोलें.",
+      "new_window_and_external": "बाहरी वेबसाइट को एक नई विंडो में खोलें."
     },
     "meta": {
       "tags": "\"{{ tags }}\" टैग किया गया",
@@ -11,11 +12,7 @@
     },
     "404": {
       "title": "404 पेज नहीं मिला",
-      "subtext_html": "आपके द्वारा जिस पेज का अनुरोध किया गया हैं वह मौजूद नहीं है. शॉपिंग जारी रखने के लिए <a href=\"{{ link }}\" class=\"text-link\">यहां क्लिक करें<\/a>."
-    },
-    "pagination": {
-      "previous": "पिछला",
-      "next": "अगला"
+      "subtext_html": "आपके द्वारा जिस पेज का अनुरोध किया गया हैं वह मौजूद नहीं है. शॉपिंग जारी रखने के लिए <a href=\"{{ link }}\">यहां<\/a> क्लिक करें."
     },
     "password_page": {
       "login_form_heading": "पासवर्ड का उपयोग करके स्टोर में प्रवेश करें",
@@ -27,7 +24,23 @@
       "admin_link_html": "क्या आप स्टोर के मालिक हैं? <a href=\"\/admin\" class=\"text-link\">यहां लॉगिन करें<\/a>",
       "password_link": "पासवर्ड का उपयोग करके प्रवेश करें",
       "powered_by_shopify_html": "यह दुकान {{ shopify }} द्वारा संचालित होगी",
-      "close": "बंद करें (esc)"
+      "close": "बंद करें (Esc)"
+    },
+    "breadcrumbs": {
+      "home": "होम",
+      "home_link_title": "पहले पेज पर वापस जाएं"
+    },
+    "newsletter_form": {
+      "newsletter_email": "आपका ईमेल",
+      "submit": "सदस्यता लें",
+      "confirmation": "सदस्यता लेने के लिए धन्यवाद"
+    },
+    "search": {
+      "no_results_html": "आपके द्वारा \"{{ terms }}\" की खोज के कोई परिणाम नहीं निकलें.",
+      "results_for_html": "आपके द्वारा \"{{ terms }}\" की खोज से निम्न बातें सामने आईं:",
+      "title": "हमारी साइट पर उत्पाद खोजें",
+      "placeholder": "खोजें",
+      "submit": "खोजें"
     },
     "social": {
       "share_on_facebook": "साझा करें",
@@ -39,41 +52,18 @@
         "share_on_pinterest": "Pinterest पर पिन करें"
       }
     },
-    "newsletter_form": {
-      "newsletter_email": "हमारी मेलिंग लिस्ट में साइन अप करें",
-      "newsletter_placeholder": "आपका ईमेल",
-      "newsletter_confirmation": "सदस्यता लेने के लिए धन्यवाद",
-      "submit": "सदस्यता लें"
-    },
-    "search": {
-      "no_results_html": "आपके द्वारा \"{{ terms }}\" की खोज के कोई परिणाम नहीं निकलें.",
-      "results_for_html": "आपके द्वारा \"{{ terms }}\" की खोज से निम्न बातें सामने आईं:",
-      "title": "खोजें",
-      "placeholder": "हमारा स्टोर खोजें",
-      "submit": "खोजें"
-    },
-    "drawers": {
-      "navigation": "साइट नेविगेशन",
-      "close_menu": "मेनू बंद करें",
-      "expand_submenu": "सबमेन्यू का विस्तार करें",
-      "collapse_submenu": "सबमेन्यू को संक्षिप्त करें"
-    },
     "payment": {
-      "method": "भुगतान की विधियां"
-    },
-    "currency": {
-      "dropdown_label": "मुद्रा"
-    },
-    "language": {
-      "dropdown_label": "भाषा"
+      "method": "भुगतान आइकन"
     }
   },
   "blogs": {
     "article": {
+      "older_post": "पुरानी पोस्ट",
+      "newer_post": "नई पोस्ट",
       "tags": "टैग",
-      "read_more": "पढ़ना जारी रखें",
+      "comment_meta_html": "{{ date }} पर {{ author }}",
       "view_all": "सभी देखें",
-      "back_to_blog": "{{ title }} पर वापस जाएं"
+      "read_more": "और अधिक पढ़ें"
     },
     "comments": {
       "title": "टिप्पणी छोड़ें",
@@ -83,11 +73,11 @@
       "post": "टिप्पणी पोस्ट करें",
       "moderated": "कृपया ध्यान दें, टिप्पणियों को प्रकाशित होने से पहले मंजूरी ली जानी चाहिए",
       "success_moderated": "आपकी टिप्पणी सफलतापूर्वक पोस्ट की गई थी. हम इसे थोड़ी देर में प्रकाशित करेंगे, क्योंकि हमारा ब्लॉग मॉडरेट है.",
-      "success": "आपकी टिप्पणी सफलतापूर्वक पोस्ट की गई थी! धन्यवाद!",
-      "with_count": {
-        "one": "{{ count }} टिप्पणी",
-        "other": "{{ count }} टिप्पणियां"
-      }
+      "success": "आपकी टिप्पणी सफलतापूर्वक पोस्ट की गई थी! धन्यवाद!"
+    },
+    "sidebar": {
+      "recent_articles": "हाल के लेख",
+      "categories": "श्रेणियां"
     }
   },
   "cart": {
@@ -96,6 +86,7 @@
       "remove": "निकालें",
       "note": "विक्रेता के लिए खास निर्देश",
       "subtotal": "कुल",
+      "savings_html": "आप {{ price }} की बचत कर रहे हैं",
       "taxes_and_shipping_at_checkout": "चेकआउट के दौरान कर और शिपिंग गणना की गई",
       "taxes_and_shipping_policy_at_checkout_html": "चेकआउट के दौरान कर और <a href=\"{{ link }}\">शिपिंग<\/a> गणना की गई",
       "taxes_included_but_shipping_at_checkout": "चेकआउट के दौरान कर शामिल किया और शिपिंग की गणना की गई",
@@ -103,28 +94,27 @@
       "update": "कार्ट अपडेट करें",
       "checkout": "चेक आउट करें",
       "empty": "आपका कार्ट वर्तमान में रिक्त है.",
+      "cookies_required": "शॉपिंग कार्ट का उपयोग करने के लिए कुकीज़ सक्षम करें",
       "continue_browsing_html": "<a href=\"{{ link }}\">यहां <\/a> ब्राउज करना जारी रखें.",
-      "close_cart": "कार्ट बंद करें",
-      "savings_html": "आप {{ savings }} की बचत कर रहे हैं",
-      "reduce_quantity": "वस्तु की मात्रा एक से कम करें",
-      "increase_quantity": "आइटम की मात्रा एक से बढ़ाएं",
-      "cookies_required": "शॉपिंग कार्ट का उपयोग करने के लिए कुकीज़ सक्षम करें"
+      "continue_shopping": "शॉपिंग जारी रखें"
     },
     "label": {
+      "price": "कीमत",
       "quantity": "मात्रा",
-      "total": "कुल"
+      "total": "कुल",
+      "add_note": "अपने ऑर्डर में एक नोट जोड़ें"
     }
   },
   "collections": {
     "general": {
-      "catalog_title": "कैटलॉग",
-      "all_of_collection": "सभी",
-      "no_matches": "क्षमा करें, इस कलेक्शन में कोई उत्पाद नहीं है."
+      "title": "कलेक्शन्स",
+      "no_matches": "क्षमा करें, इस कलेक्शन में कोई उत्पाद नहीं हैं",
+      "link_title": "हमारा {{ title }} कलेक्शन ब्राउज़ करें"
     },
     "sorting": {
       "title": "द्वारा क्रमबद्ध करें",
-      "title_tags": "इस द्वारा फ़िल्टर करें",
-      "all_of_collection": "सभी {{ collection }}"
+      "browse": "इसके द्वारा ब्राउज़ करें",
+      "all_tags": "सभी"
     }
   },
   "contact": {
@@ -154,7 +144,6 @@
     },
     "addresses": {
       "title": "आपके पतें",
-      "default": "डिफॉल्ट",
       "add_new": "नया पता जोड़ें",
       "edit_address": "पता संपादित करें",
       "first_name": "नाम",
@@ -172,7 +161,8 @@
       "update": "पता अपडेट करें",
       "cancel": "रद्द करें",
       "edit": "संपादित करें",
-      "delete": "हटाएं"
+      "delete": "हटाएं",
+      "delete_confirm": "क्या आप वाकई इस पते को हटाना चाहते हैं?"
     },
     "login": {
       "title": "लॉगिन",
@@ -240,72 +230,77 @@
     }
   },
   "home_page": {
-    "slideshow": {
-      "navigation_instructions": "यदि मोबाइल डिवाइस का उपयोग करते है तो स्लाइड शो या बाएं \/ दाएं स्वाइप करने के लिए बाएं \/ दाएं तीर का उपयोग करें",
-      "next_slide": "अगली स्लाइड",
-      "previous_slide": "पिछली स्लाइड",
-      "play": "स्लाइडशो चलाएं",
-      "pause": "स्लाइडशो रोकें",
-      "load_slide": "{{ slide_number }} स्लाइड लोड करें",
-      "active_slide": "वर्तमान में {{ slide_number }} स्लाइड"
-    },
     "onboarding": {
       "product_vendor": "उत्पाद विक्रेता",
       "product_title": "उत्पाद शीर्षक का उदाहरण",
-      "collection_title": "कलेक्शन शीर्षक का उदाहरण",
       "blog_title": "आपकी पोस्ट का शीर्षक",
       "blog_excerpt": "आपके स्टोर ने अभी तक कोई ब्लॉग पोस्ट प्रकाशित नहीं की है. ब्लॉग का उपयोग लॉन्च किए गए नए उत्पाद , युक्तियां या अन्य समाचारों के बारे में बताने के लिए किया जा सकता है जिन्हें आप अपने ग्राहकों के साथ शेयर करना चाहते हैं. आप अपने स्वयं के स्टोर और ब्लॉग के लिए प्रेरणा और सलाह के लिए Shopify का ई-कॉमर्स ब्लॉग चेक आउट कर सकते हैं.",
-      "no_content": "इस सेक्शन में वर्तमान में कोई सामग्री शामिल नहीं है. साइडबार का उपयोग करके इस सेक्शन में सामग्री जोड़ें."
+      "collection_title": "कलेक्शन शीर्षक का उदाहरण"
     },
-    "map": {
-      "address_error": "उस पते को देखने में त्रुटि हुई",
-      "address_no_results": "उस पते का कोई परिणाम नहीं है",
-      "address_query_limit_html": "आपने Google API उपयोग की सीमा पार कर ली है. <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">प्रीमियम योजना<\/a> में अपग्रेड करने पर विचार करें.",
-      "auth_error_html": "आपके Google मैप खाते को प्रमाणति करने में समस्या हुई."
+    "slideshow": {
+      "previous_slide": "पिछली स्लाइड",
+      "next_slide": "अगली स्लाइड",
+      "pause": "स्लाइडशो रोकें",
+      "play": "स्लाइडशो चलाएं",
+      "load_slide": "{{ slide_number }} स्लाइड लोड करें",
+      "active_slide": "वर्तमान में {{ slide_number }} स्लाइड",
+      "navigation_instructions": "यदि मोबाइल डिवाइस का उपयोग करते है तो स्लाइड शो या बाएं \/ दाएं स्वाइप करने के लिए बाएं \/ दाएं तीर का उपयोग करें"
     }
   },
   "layout": {
+    "navigation": {
+      "menu": "मेनू"
+    },
     "cart": {
       "title": "कार्ट"
     },
     "customer": {
-      "account": "खाता",
-      "log_out": "लॉग आउट करें",
+      "account": "मेरा खाता",
+      "log_out": "लॉग आउट",
       "log_in": "लॉग इन करें",
-      "create_account": "खाता बनाएं"
+      "create_account": "खाता बनाएं",
+      "or": "या"
     },
     "footer": {
-      "social_platform": "{{ platform }} पर {{ name }}"
+      "blog_title": "ताज़ा खबर",
+      "social_title": "हमारा अनुसरण करें",
+      "social_platform": "{{ platform }} पर {{ name }}",
+      "newsletter_title": "न्यूज़लेटर",
+      "copyright": "कॉपीराइट"
     }
   },
   "products": {
     "general": {
-      "save_html": "{{ saved_amount }}<br \/> सहेजें",
-      "collection_return": "{{ collection }} पर वापस जाएं",
-      "sale_price": "सेल की कीमत",
-      "regular_price": "सामान्य कीमत",
+      "from_html": "{{ price }} से",
       "include_taxes": "कर शामिल है.",
       "shipping_policy_html": "चेकआउट के दौरान <a href=\"{{ link }}\">शिपिंग<\/a> की गणना की गई",
-      "unit_price": "इकाई कीमत"
+      "share_title": "इस उत्पाद को साझा करें"
     },
     "product": {
       "sold_out": "बिक गया",
-      "sold_out_html": "<br \/> बिक गया",
+      "sale": "बिक्री",
       "unavailable": "अनुपलब्ध",
+      "compare_at": "पर तुलना करें",
       "quantity": "मात्रा",
       "add_to_cart": "कार्ट में जोड़ें",
+      "sale_price": "सेल की कीमत",
+      "regular_price": "सामान्य कीमत",
+      "description": "विवरण",
       "full_details": "पूरा विवरण",
-      "view_in_space": "अपनी जगह पर चलाएं",
-      "view_in_space_label": "अपने स्थान में देखें, संवर्धित वास्तविकता विंडो में आइटम लोड करता है",
-      "gallery_thumbnail_alt": "गैलरी व्यूवर में इमेज लोड करें, {{ imageAlt }}",
-      "video_thumbnail_alt": "गैलरी व्यूवर में वीडियो लोड करें और चलाएं, {{ imageAlt }}",
-      "model_thumbnail_alt": "गैलरी दर्शक में 3D मॉडल लोड करें, {{ imageAlt }}",
-      "slide_label": "{{ slide_max }} में से स्लाइड {{ slide_number }}."
+      "unit_price_label": "यूनिट मूल्य"
     },
     "zoom": {
       "next": "अगला (दाएं तीर के निशान वाली कुंजी)",
       "prev": "पिछला (बाएं तीर के निशान वाली कुंजी)",
       "close": "बंद करें (Esc)"
+    }
+  },
+  "map": {
+    "errors": {
+      "address_error": "उस पते को देखने में त्रुटि हुई",
+      "address_no_results": "उस पते का कोई परिणाम नहीं है",
+      "address_query_limit_html": "आपने Google API उपयोग की सीमा पार कर ली है. <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">प्रीमियम योजना<\/a> में अपग्रेड करने पर विचार करें.",
+      "auth_error_html": "आपकी Google मानचित्र API कुंजी को प्रमाणित करने में एक समस्या थी."
     }
   },
   "gift_cards": {
