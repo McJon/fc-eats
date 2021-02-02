@@ -1,4 +1,3 @@
-<!-- /snippets/search-bar.liquid -->
 {% comment %}
 
   A snippet to include a search bar anywhere in your theme.
@@ -14,20 +13,24 @@
 
 {% endcomment %}
 
-{% comment %}
-  Set the default button style if not defined
-{% endcomment %}
-{% unless search_btn_style %}
-  {% assign search_btn_style = 'btn--secondary' %}
-{% endunless %}
-
-<form action="{{ routes.search_url }}" method="get" class="input-group search-bar {{ search_bar_location }}" role="search">
-  {% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
-  <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="input-group-field" aria-label="{{ 'general.search.placeholder' | t }}">
-  <span class="input-group-btn">
-    <button type="submit" class="{{ search_btn_style }} icon-fallback-text">
+{% if search-bar == 'header' %}
+  <form action="{{ routes.search_url }}" method="get" class="header-bar__search-form clearfix" role="search">
+    {% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
+    <button type="submit" class="btn btn--search icon-fallback-text header-bar__search-submit">
       <span class="icon icon-search" aria-hidden="true"></span>
       <span class="fallback-text">{{ 'general.search.submit' | t }}</span>
     </button>
-  </span>
-</form>
+    <input type="search" name="q" value="{{ search.terms | escape }}" aria-label="{{ 'general.search.placeholder' | t }}" class="header-bar__search-input" placeholder="{{ 'general.search.placeholder' | t }}">
+  </form>
+{% else %}
+  <form action="{{ routes.search_url }}" method="get" class="input-group search-bar" role="search">
+    {% comment %}<input type="hidden" name="type" value="product">{% endcomment %}
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="input-group-field" aria-label="{{ 'general.search.placeholder' | t }}" placeholder="{{ 'general.search.placeholder' | t }}">
+    <span class="input-group-btn">
+      <button type="submit" class="btn btn--search icon-fallback-text">
+        <span class="icon icon-search" aria-hidden="true"></span>
+        <span class="fallback-text">{{ 'general.search.submit' | t }}</span>
+      </button>
+    </span>
+  </form>
+{% endif %}

@@ -1,9 +1,10 @@
 {
   "general": {
     "accessibility": {
-      "refresh_page": "Le choix d'une sélection entraîne l'actualisation d'une page entière.",
+      "refresh_page": "le choix d'une sélection entraîne une actualisation complète de la page",
       "unit_price_separator": "par",
-      "selection_help": "Appuyez sur la touche espace puis sur les touches fléchées pour faire une sélection."
+      "new_window": "S'ouvre dans une nouvelle fenêtre.",
+      "new_window_and_external": "Ouvre un site externe dans une nouvelle fenêtre."
     },
     "meta": {
       "tags": "Mots clés \"{{ tags }}\"",
@@ -11,11 +12,7 @@
     },
     "404": {
       "title": "404 - Page non trouvée",
-      "subtext_html": "Cette page n'est pas disponible. <a href=\"{{ link }}\" class=\"text-link\">Retourner vers la boutique<\/a>"
-    },
-    "pagination": {
-      "previous": "Précédent",
-      "next": "Suivant"
+      "subtext_html": "Cette page n'est pas disponible. <a href=\"{{ link }}\">Retourner vers la boutique<\/a>"
     },
     "password_page": {
       "login_form_heading": "Accéder à la boutique à l'aide d'un mot de passe:",
@@ -24,10 +21,26 @@
       "login_form_submit": "Entrer",
       "signup_form_email_label": "E-mails",
       "signup_form_success": "Nous vous enverrons un e-mail juste avant l'ouverture !!",
-      "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"\/admin\" class=\"text-link\">Connectez-vous ici<\/a>.",
+      "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"\/admin\" class=\"text-link\">Connectez-vous ici<\/a>",
       "password_link": "Entrer avec un mot de passe",
       "powered_by_shopify_html": "Cette boutique sera propulsée par {{ shopify }}",
       "close": "Fermer (Esc)"
+    },
+    "breadcrumbs": {
+      "home": "Accueil",
+      "home_link_title": "Retour à la page d'accueil"
+    },
+    "newsletter_form": {
+      "newsletter_email": "votre-e-mail@exemple.com",
+      "submit": "S'inscrire",
+      "confirmation": "Merci de vous être inscrit"
+    },
+    "search": {
+      "no_results_html": "Votre recherche pour \"{{ terms }}\" n'a pas généré de résultats.",
+      "results_for_html": "Votre recherche pour \"{{ terms }}\" a généré les résultats suivants:",
+      "title": "Effectuez une recherche",
+      "placeholder": "Rechercher",
+      "submit": "Recherche"
     },
     "social": {
       "share_on_facebook": "Partager",
@@ -39,41 +52,18 @@
         "share_on_pinterest": "Épingler sur Pinterest"
       }
     },
-    "newsletter_form": {
-      "newsletter_email": "Inscrivez-vous à notre infolettre",
-      "newsletter_placeholder": "Votre e-mail",
-      "newsletter_confirmation": "Merci de vous être inscrit",
-      "submit": "S'inscrire"
-    },
-    "search": {
-      "no_results_html": "Votre recherche pour \"{{ terms }}\" n'a pas généré de résultats.",
-      "results_for_html": "Votre recherche pour \"{{ terms }}\" a généré les résultats suivants:",
-      "title": "Rechercher",
-      "placeholder": "Rechercher dans la boutique",
-      "submit": "Recherche"
-    },
-    "drawers": {
-      "navigation": "Navigation",
-      "close_menu": "Fermer le menu",
-      "expand_submenu": "Ouvrir le menu",
-      "collapse_submenu": "Replier le menu"
-    },
     "payment": {
-      "method": "Moyens de paiement"
-    },
-    "currency": {
-      "dropdown_label": "Devise"
-    },
-    "language": {
-      "dropdown_label": "Langue"
+      "method": "Icônes Paiement"
     }
   },
   "blogs": {
     "article": {
+      "older_post": "Article précédent",
+      "newer_post": "Article suivant",
       "tags": "Tags",
-      "read_more": "Plus",
+      "comment_meta_html": "{{ author }} le {{ date }}",
       "view_all": "Tout afficher",
-      "back_to_blog": "Retour à {{ title }}"
+      "read_more": "Plus"
     },
     "comments": {
       "title": "Laissez un commentaire",
@@ -83,11 +73,11 @@
       "post": "Publier le commentaire",
       "moderated": "Veuillez noter que les commentaires doivent être approuvés avant d'être affichés",
       "success_moderated": "Votre commentaire a été soumis avec succès. Nous le publierons sous peu, suite à notre processus de modération.",
-      "success": "Votre commentaire a été publié avec succès!",
-      "with_count": {
-        "one": "{{ count }} commentaire",
-        "other": "{{ count }} commentaires"
-      }
+      "success": "Votre commentaire a été publié avec succès!"
+    },
+    "sidebar": {
+      "recent_articles": "Messages récents",
+      "categories": "Catégories"
     }
   },
   "cart": {
@@ -96,6 +86,7 @@
       "remove": "Supprimer",
       "note": "Instructions spéciales pour la commande",
       "subtotal": "Sous-total",
+      "savings_html": "Vous économisez {{ price }}",
       "taxes_and_shipping_at_checkout": "Taxes et frais de port calculés à l'étape de paiement",
       "taxes_and_shipping_policy_at_checkout_html": "Taxes et <a href=\"{{ link }}\">frais de port<\/a> calculés à l'étape de paiement",
       "taxes_included_but_shipping_at_checkout": "Taxes incluses et frais de port calculés à l'étape de paiement",
@@ -103,28 +94,27 @@
       "update": "Mettre à jour",
       "checkout": "Procéder au paiement",
       "empty": "Votre panier est vide.",
+      "cookies_required": "Activer les cookies pour utiliser le panier",
       "continue_browsing_html": "<a href=\"{{ link }}\">Retourner vers la boutique<\/a>.",
-      "close_cart": "Fermer le panier",
-      "savings_html": "Vous économisez {{ savings }}",
-      "reduce_quantity": "Réduire la quantité de l'article de un",
-      "increase_quantity": "Augmenter la quantité de l'article de un",
-      "cookies_required": "Activer les cookies pour utiliser le panier"
+      "continue_shopping": "Continuer vos achats"
     },
     "label": {
+      "price": "Prix",
       "quantity": "Quantité",
-      "total": "Total"
+      "total": "Total",
+      "add_note": "Ajouter une note à votre commande"
     }
   },
   "collections": {
     "general": {
-      "catalog_title": "Catalogue",
-      "all_of_collection": "Tout",
-      "no_matches": "Aucun produit ne correspond à votre recherche."
+      "title": "Collections",
+      "no_matches": "Aucun produit ne correspond à votre recherche.",
+      "link_title": "Consultez la collection {{ title }}"
     },
     "sorting": {
-      "title": "Trier",
-      "title_tags": "Filtrer",
-      "all_of_collection": "Tous {{ collection }}"
+      "title": "Trier par",
+      "browse": "Parcourir",
+      "all_tags": "Tout"
     }
   },
   "contact": {
@@ -154,7 +144,6 @@
     },
     "addresses": {
       "title": "Votre adresse",
-      "default": "Par défaut",
       "add_new": "Ajouter une nouvelle adresse",
       "edit_address": "Éditer l'adresse",
       "first_name": "Prénom",
@@ -172,7 +161,8 @@
       "update": "Mettre à jour l'adresse",
       "cancel": "Annuler",
       "edit": "Éditer",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "delete_confirm": "Êtes-vous certain(e) de vouloir supprimer cette adresse?"
     },
     "login": {
       "title": "Connexion",
@@ -240,72 +230,77 @@
     }
   },
   "home_page": {
-    "slideshow": {
-      "navigation_instructions": "Utilisez les flèches gauche\/droite pour naviguer dans le diaporama ou glissez vers la gauche\/droite sur un appareil mobile",
-      "next_slide": "Diapositive suivante",
-      "previous_slide": "Diapositive précédente",
-      "play": "Lire le diaporama",
-      "pause": "Mettre en pause le diaporama",
-      "load_slide": "Charger la diapositive {{ slide_number }}",
-      "active_slide": "Faire glisser {{ slide_number }}, en cours"
-    },
     "onboarding": {
       "product_vendor": "Le vendeur du produit",
       "product_title": "Titre du produit",
-      "collection_title": "Titre de la collection",
       "blog_title": "Le titre de votre publication",
       "blog_excerpt": "Votre magasin n'a encore rien bloggué. Un blog peut être utilisé pour parler des lancements de nouveaux produits, d'astuces, ou d'autres nouvelles que vous voulez partager avec vos clients. Vous pouvez regarder le blog d'e-commerce de Shopify pour trouver de l'inspiration et des conseils pour votre propre magasin et blog.",
-      "no_content": "Cette section ne contient actuellement aucun contenu. Ajoutez-en en utilisant la barre latérale."
+      "collection_title": "Titre de la collection"
     },
-    "map": {
-      "address_error": "Vous ne trouvez pas cette adresse",
-      "address_no_results": "Aucun résultat pour cette adresse",
-      "address_query_limit_html": "Vous avez dépassé la limite de Google utilisation de l'API. Envisager la mise à niveau à un <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">régime spécial<\/a>.",
-      "auth_error_html": "Il y avait un problème authentifier votre compte Google Maps."
+    "slideshow": {
+      "previous_slide": "Diapositive précédente",
+      "next_slide": "Diapositive suivante",
+      "pause": "Mettre en pause le diaporama",
+      "play": "Lire le diaporama",
+      "load_slide": "Charger la diapositive {{ slide_number }}",
+      "active_slide": "Faire glisser {{ slide_number }}, en cours",
+      "navigation_instructions": "Utilisez les flèches gauche\/droite pour naviguer dans le diaporama ou glissez vers la gauche\/droite sur un appareil mobile"
     }
   },
   "layout": {
+    "navigation": {
+      "menu": "Menu"
+    },
     "cart": {
       "title": "Panier"
     },
     "customer": {
-      "account": "Compte",
+      "account": "Mon compte",
       "log_out": "Se déconnecter",
       "log_in": "Se connecter",
-      "create_account": "Créer un compte"
+      "create_account": "Créer un compte",
+      "or": "ou"
     },
     "footer": {
-      "social_platform": "{{ name }} sur {{ platform }}"
+      "blog_title": "Dernières nouvelles",
+      "social_title": "Restez en contact",
+      "social_platform": "{{ name }} sur {{ platform }}",
+      "newsletter_title": "Infolettre",
+      "copyright": "Droit d'auteur"
     }
   },
   "products": {
     "general": {
-      "save_html": "Épargnez<br \/>{{ saved_amount }}",
-      "collection_return": "Retour à {{ collection }}",
-      "sale_price": "Prix réduit",
-      "regular_price": "Prix régulier",
+      "from_html": "À partir de {{ price }}",
       "include_taxes": "Taxes incluses.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Frais de port<\/a> calculés à l'étape de paiement.",
-      "unit_price": "Prix unitaire"
+      "share_title": "Partager ce produit"
     },
     "product": {
       "sold_out": "Épuisé",
-      "sold_out_html": "Épuisé",
+      "sale": "Promo",
       "unavailable": "Non disponible",
+      "compare_at": "Prix normal",
       "quantity": "Quantité",
       "add_to_cart": "Ajouter au panier",
+      "sale_price": "Prix réduit",
+      "regular_price": "Prix régulier",
+      "description": "Description",
       "full_details": "Tous les détails",
-      "view_in_space": "Afficher dans votre espace",
-      "view_in_space_label": "Affichage dans votre espace, charge l'article dans une fenêtre de réalité augmentée",
-      "gallery_thumbnail_alt": "Charger l'image dans la galerie, {{ imageAlt }}",
-      "video_thumbnail_alt": "Charger et lire la vidéo dans la visionneuse de la Galerie, {{ imageAlt }}",
-      "model_thumbnail_alt": "Charger le modèle 3D dans la Galerie, {{ imageAlt }}",
-      "slide_label": "Diapositive {{ slide_number }} sur {{ slide_max }}."
+      "unit_price_label": "Prix unitaire"
     },
     "zoom": {
       "next": "Suivant (flèche droite)",
       "prev": "Précédent (flèche gauche)",
       "close": "Fermer (Esc)"
+    }
+  },
+  "map": {
+    "errors": {
+      "address_error": "Vous ne trouvez pas cette adresse",
+      "address_no_results": "Aucun résultat pour cette adresse",
+      "address_query_limit_html": "Vous avez dépassé la limite de Google utilisation de l'API. Envisager la mise à niveau à un <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">régime spécial<\/a>.",
+      "auth_error_html": "Il y avait un problème authentifier votre compte Google Maps API."
     }
   },
   "gift_cards": {

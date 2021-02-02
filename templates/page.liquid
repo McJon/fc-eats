@@ -1,19 +1,15 @@
-<!-- /templates/page.liquid -->
 <div class="grid">
-  <div class="grid__item large--five-sixths push--large--one-twelfth">
 
-    <header class="section-header text-center">
-      <h1>{{ page.title }}</h1>
-      <hr class="hr--small">
-    </header>
+  <div class="grid__item post-large--two-thirds push--post-large--one-sixth">
 
-    <div class="grid">
-      <div class="grid__item large--four-fifths push--large--one-tenth">
-        <div class="rte rte--nomargin rte--indented-images">
-          {{ page.content }}
-        </div>
-      </div>
+    <div class="section-header">
+      <h1 class="section-header--title">{{ page.title }}</h1>
+    </div>
+
+    <div class="rte">
+      {{ page.content }}
     </div>
 
   </div>
+
 </div>

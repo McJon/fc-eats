@@ -1,27 +1,22 @@
-<!-- snippets/featured-blog.liquid -->
-{% if section.settings.blog_show_author or section.settings.blog_show_date %}
+<h2 class="h3"><a href="{{ article.url }}">{{ article.title }} &rarr;</a></h2>
+{% if section.settings.blog_show_date or section.settings.blog_show_author %}
   <div class="featured-blog__meta">
-    {% if section.settings.blog_show_author %}
-      <span class="featured-blog__author">
-        {{ article.author }}
+    {% if section.settings.blog_show_date %}
+      <span class="featured-blog__date">
+        <time datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}">{{ article.published_at | date: format: 'date' }}</time>
       </span>
     {% endif %}
-    {% if section.settings.blog_show_date %}
-      <div class="featured-blog__date">
-        <time datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}" class="date">{{ article.published_at | date: format: 'date' }}</time>
-      </div>
+    {% if section.settings.blog_show_date and section.settings.blog_show_author %}
+      <span class="meta-sep">•</span>
     {% endif %}
-    <hr class="hr--small {% if section.settings.post_limit == 1 and section.settings.blog_show_image == false %}hr--middle{% else %}hr--left{% endif %}">
+    {% if section.settings.blog_show_author %}
+      <span class="featured-blog__author">{{ article.author }}</span>
+    {% endif %}
   </div>
 {% endif %}
-<h2 class="h3{% if section.settings.post_limit == 1 and section.settings.blog_show_image == false %} title--one-post{% endif %}">
-  <a class="article__heading-link" href="{{ article.url }}">{{ article.title }}</a>
-</h2>
+
 {% if section.settings.blog_show_excerpt %}
   <div class="rte rte--indented-images">
     {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
   </div>
 {% endif %}
-<p>
-  <a href="{{ article.url }}" class="text-link">{{ 'blogs.article.read_more' | t }} <span class="icon icon-arrow-right" aria-hidden="true"></span></a>
-</p>

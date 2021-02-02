@@ -1,45 +1,51 @@
-<div class="newsletter" data-section-id="{{ section.id }}" data-section-type="newsletter-section">
-  <div class="wrapper">
-    {% unless section.settings.heading == blank %}
-      <div class="section-header text-center">
-        <h2 class="h1 section-header__title">{{ section.settings.heading | escape }}</h2>
-        {% if section.settings.subheading == blank %}
-          <hr class="hr--small">
-        {% endif %}
-      </div>
-    {% endunless %}
-    {% unless section.settings.subheading == blank %}
-      <div class="section-subheading rte text-center">
-        {{ section.settings.subheading }}
-        <hr class="hr--small">
-      </div>
-    {% endunless %}
-    {% form 'customer' %}
-      {{ form.errors | default_errors }}
-      {% if form.posted_successfully? %}
-        <div class="newsletter--form">
-          <div class="note form-success">{{ 'general.newsletter_form.newsletter_confirmation' | t }}</div>
+<style>
+  .newsletter-grid__item {
+    background-color: {{ section.settings.color_bg }};
+  }
+
+  .newsletter-grid__item:first-child {
+    background-color: {{ section.settings.color_bg | color_modify: 'alpha', 0.5 }};
+  }
+</style>
+
+<div class="grid-uniform newsletter-grid">
+  <div class="grid__item newsletter-grid__item post-large--one-half">
+    <div class="newsletter-content-wrapper">
+      <div class="newsletter-content">
+        {% unless section.settings.heading == blank %}
+        <div class="section-header section-header--small">
+          <h2 class="section-header__title{% unless section.settings.subtext == blank %} section-header__title-spacing{% endunless %}">
+            {{ section.settings.heading | escape }}
+          </h2>
         </div>
-      {% else %}
-        <label for="Email" class="newsletter__label hidden-label">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="newsletter--form">
-          <div class="input-group">
-            <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" name="contact[email]" id="Email" class="input-group-field newsletter__input" autocorrect="off" autocapitalize="off">
-            <span class="input-group-btn">
-              <button id="Subscribe" type="submit"
-                class="btn newsletter__submit"
-                aria-label="{{ 'general.newsletter_form.submit' | t }}">
-                <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
-                <span class="newsletter__submit-text--small">
-                  <span class="icon icon-arrow-right" aria-hidden="true"></span>
-                </span>
-              </button>
-            </span>
-          </div>
-        </div>
-      {% endif %}
-    {% endform %}
+        {% endunless %}
+        {% unless section.settings.subtext == blank %}
+          {{ section.settings.subtext }}
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+
+  <div class="grid__item newsletter-grid__item post-large--one-half">
+    <div class="newsletter-content-wrapper">
+      <div class="newsletter-content">
+        {% form 'customer' %}
+          {{ form.errors | default_errors }}
+          {% if form.posted_successfully? %}
+            <p class="note form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+          {% else %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="input-group">
+              <label for="Email" class="visually-hidden">{{ 'contact.form.email' | t }}</label>
+              <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+              <span class="input-group-btn">
+                <button type="submit" class="btn" name="commit" id="subscribe">{{ 'general.newsletter_form.submit' | t }}</button>
+              </span>
+            </div>
+          {% endif %}
+        {% endform %}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -70,7 +76,7 @@
     "zh-CN": "新闻通讯",
     "zh-TW": "電子報"
   },
-  "class": "index-section index-newsletter-section shopify-section--full-width",
+  "class": "newsletter-section index-section",
   "settings": [
     {
       "type": "text",
@@ -78,7 +84,7 @@
       "label": {
         "cs": "Nadpis",
         "da": "Overskrift",
-        "de": "Überschrift",
+        "de": "Titel",
         "en": "Heading",
         "es": "Título",
         "fi": "Otsake",
@@ -105,14 +111,14 @@
         "en": "Subscribe to our newsletter",
         "es": "Suscríbete a nuestro boletín de noticias",
         "fi": "Tilaa uutiskirjeemme",
-        "fr": "Inscription à notre newsletter",
+        "fr": "Inscription à la newsletter",
         "it": "Iscriviti alla nostra newsletter",
         "ja": "ストアからのお知らせを受け取る",
         "ko": "뉴스 레터 구독",
         "nb": "Abonner på nyhetsbrevet vårt",
         "nl": "Abonneren op onze nieuwsbrief",
         "pl": "Zapisz się do naszego newslettera",
-        "pt-BR": "Receber nosso newsletter",
+        "pt-BR": "Assine a nossa newsletter",
         "pt-PT": "Subscreva a nossa newsletter",
         "sv": "Prenumerera på vårt nyhetsbrev",
         "th": "สมัครรับจดหมายข่าวของเรา",
@@ -124,36 +130,36 @@
     },
     {
       "type": "richtext",
-      "id": "subheading",
+      "id": "subtext",
       "label": {
-        "cs": "Podnadpis",
-        "da": "Underoverskrift",
-        "de": "Untertitel",
-        "en": "Subheading",
-        "es": "Subtítulo",
-        "fi": "Alaotsikko",
-        "fr": "Sous-titre",
-        "it": "Sottotitolo",
-        "ja": "小見出し",
-        "ko": "소제목",
-        "nb": "Underoverskrift",
-        "nl": "Subkop",
-        "pl": "Nagłówek podrzędny",
-        "pt-BR": "Subtítulo",
-        "pt-PT": "Subtítulo",
-        "sv": "Underrubrik",
-        "th": "หัวเรื่องย่อย",
-        "tr": "Alt başlık",
-        "vi": "Tiêu đề phụ",
-        "zh-CN": "副标题",
-        "zh-TW": "子標題"
+        "cs": "Text nižší úrovně",
+        "da": "Undertekst",
+        "de": "Subtext",
+        "en": "Subtext",
+        "es": "Subtexto",
+        "fi": "Alateksti",
+        "fr": "Sous-texte",
+        "it": "Sottotesto",
+        "ja": "サブテキスト",
+        "ko": "하위 텍스트",
+        "nb": "Undertekst",
+        "nl": "Subtekst",
+        "pl": "Tekst podrzędny",
+        "pt-BR": "Subtexto",
+        "pt-PT": "Subtexto",
+        "sv": "Undertext",
+        "th": "ข้อความรอง",
+        "tr": "Alt metin",
+        "vi": "Văn bản phụ",
+        "zh-CN": "子文本",
+        "zh-TW": "子文字"
       },
       "default": {
         "cs": "<p>Získejte informace o propagačních akcích, nových produktech a slevách – přímo do své schránky.</p>",
         "da": "<p>Reklamer, nye produkter og salg. Direkte i din indbakke.</p>",
-        "de": "<p>Werbeaktionen, neue Produkte und Sonderangebote. Direkt in Ihrem Posteingang.</p>",
+        "de": "<p>Werbeaktionen, neue Produkte und Sonderangebote. Direkt in deinem Posteingang.</p>",
         "en": "<p>Promotions, new products and sales. Directly to your inbox.</p>",
-        "es": "<p>Promociones, nuevos productos y ofertas. Directamente a tu bandeja de entrada.</p>",
+        "es": "<p>Promociones, nuevos productos y ventas. Directamente a tu bandeja de entrada.</p>",
         "fi": "<p>Kampanjat, uudet tuotteet ja myynti. Suoraan saapuneet-kansioosi</p>",
         "fr": "<p>Promotions, nouveaux produits et soldes. Directement dans votre boîte de réception.</p>",
         "it": "<p>Promozioni, nuovi prodotti e offerte. Direttamente nella tua casella di posta.</p>",
@@ -162,7 +168,7 @@
         "nb": "<p>Kampanjer, nye produkter og salg. Direkte i innboksen din.</p>",
         "nl": "<p>Promoties, nieuwe producten en uitverkoop rechtstreeks in je inbox.</p>",
         "pl": "<p>Promocje, nowe produkty i wyprzedaże. Bezpośrednio do Twojej skrzynki odbiorczej.</p>",
-        "pt-BR": "<p>Promoções, novos produtos e vendas. Diretamente para sua caixa de entrada.</p>",
+        "pt-BR": "<p>Promoções, novos produtos e ofertas, diretamente em sua caixa de entrada.</p>",
         "pt-PT": "<p>Promoções, novos produtos e ofertas. Diretamente na sua caixa de entrada.</p>",
         "sv": "<p>Kampanjer, nya produkter och försäljning. Direkt till din inkorg.</p>",
         "th": "<p>โปรโมชัน สินค้าใหม่ และการลดราคา ตรงสู่กล่องจดหมายเข้าของคุณ</p>",
@@ -171,6 +177,34 @@
         "zh-CN": "<p>促销、新产品和销售。直接发送到您的收件箱。</p>",
         "zh-TW": "<p>讓您直接在收件匣內收取促銷活動、最新產品和特賣活動訊息。</p>"
       }
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": {
+        "cs": "Barva pozadí",
+        "da": "Baggrundsfarve",
+        "de": "Hintergrundfarbe",
+        "en": "Background color",
+        "es": "Color de fondo",
+        "fi": "Taustaväri",
+        "fr": "Couleur de fond",
+        "it": "Colore sfondo",
+        "ja": "背景の色",
+        "ko": "배경색",
+        "nb": "Bakgrunnsfarge",
+        "nl": "Achtergrondkleur",
+        "pl": "Kolor tła",
+        "pt-BR": "Cor do fundo",
+        "pt-PT": "Cor do fundo",
+        "sv": "Bakgrundsfärg",
+        "th": "สีพื้นหลัง",
+        "tr": "Arka plan rengi",
+        "vi": "Màu nền",
+        "zh-CN": "背景色",
+        "zh-TW": "背景顏色"
+      },
+      "default": "#eeeeee"
     },
     {
       "type": "paragraph",
@@ -193,7 +227,7 @@
         "sv": "Alla kunder som registrerar sig kommer att få ett konto skapat i Shopify. [Visa kunder](/admin/customers?query=&accepts_marketing=1)",
         "th": "ระบบจะสร้างบัญชีผู้ใช้ใน Shopify ให้แก่ลูกค้ารายที่ลงทะเบียนแล้ว [ดูลูกค้า](/admin/customers?query=&accepts_marketing=1)",
         "tr": "Kaydolan tüm müşteriler için Shopify'da bir hesap oluşturulur. [Müşterileri görüntüleyin](/admin/customers?query=&accepts_marketing=1)",
-        "vi": "Bất kỳ khách hàng nào đăng ký đều sẽ được tạo tài khoản trong Shopify. [Xem khách hàng](/admin/customers?query=&accepts_marketing=1)",
+        "vi": "Bất kỳ khách hàng nào đăng ký sẽ được tạo tài khoản trong Shopify. [Xem khách hàng](/admin/customers?query=&accepts_marketing=1)",
         "zh-CN": "任何注册用户都将在 Shopify 中拥有一个为他们创建的账户。[查看客户](/admin/customers?query=&accepts_marketing=1)",
         "zh-TW": "顧客註冊後就可以擁有 Shopify 帳號。[查看顧客](/admin/customers?query=&accepts_marketing=1)"
       }
@@ -202,27 +236,27 @@
   "presets": [
     {
       "name": {
-        "cs": "Přihlášení k odběru novinek",
-        "da": "Tilmelding til nyhedsbrev",
-        "de": "Newsletter-Anmeldung",
-        "en": "Newsletter signup",
-        "es": "Suscripción al boletín",
-        "fi": "Uutiskirjeen tilaus",
-        "fr": "Inscription à la newsletter",
-        "it": "Iscrizione alla Newsletter",
-        "ja": "ニュースレターの登録",
-        "ko": "뉴스레터 신청",
-        "nb": "Registrering for nyhetsbrev",
-        "nl": "Nieuwsbriefaanmelding",
-        "pl": "Rejestracja do newslettera",
-        "pt-BR": "Assinatura da newsletter",
-        "pt-PT": "Registo na newsletter",
-        "sv": "Nyhetsbrevsregistrering",
-        "th": "การสมัครรับจดหมายข่าว",
-        "tr": "Bülten kaydı",
-        "vi": "Đăng ký nhận bản tin",
-        "zh-CN": "新闻通讯注册",
-        "zh-TW": "訂閱電子報"
+        "cs": "Novinky",
+        "da": "Nyhedsbrev",
+        "de": "Newsletter",
+        "en": "Newsletter",
+        "es": "Boletín",
+        "fi": "Uutiskirje",
+        "fr": "Newsletter",
+        "it": "Newsletter",
+        "ja": "ニュースレター",
+        "ko": "뉴스레터",
+        "nb": "Nyhetsbrev",
+        "nl": "Nieuwsbrief",
+        "pl": "Newsletter",
+        "pt-BR": "Newsletter",
+        "pt-PT": "Newsletter",
+        "sv": "Nyhetsbrev",
+        "th": "จดหมายข่าว",
+        "tr": "Bülten",
+        "vi": "Bản tin",
+        "zh-CN": "新闻通讯",
+        "zh-TW": "電子報"
       },
       "category": {
         "cs": "Propagace",
@@ -248,7 +282,6 @@
         "zh-TW": "宣傳活動"
       }
     }
-  ],
-  "blocks": []
+  ]
 }
 {% endschema %}

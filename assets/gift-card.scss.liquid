@@ -17,7 +17,7 @@ $colorBody: {{ settings.color_body_bg }};
 $colorBorder: {{ settings.color_borders }};
 
 // Gift Card Colors
-$colorGiftText: {{ settings.color_body_text }}; // note, this is always on a white background
+$colorGiftText: #999; // note, this is always on a white background
 $colorGiftBorder: {{ settings.color_primary }};
 
 // Sizes
@@ -210,7 +210,7 @@ $gutter: 30px;
   padding: .4em .5em;
   display: inline-block;
   vertical-align: baseline;
-  color: $colorGiftText;
+  color: #777;
   line-height: 1;
 
   .disabled & {
@@ -353,7 +353,7 @@ $gutter: 30px;
   animation: fadein 0.5s ease-in-out both 0.4s
 }
 
-#QrCode {
+#qr-code {
   img {
     padding: $gutter;
     border: 1px solid $colorBorder;
@@ -451,6 +451,8 @@ $gutter: 30px;
   }
 
   html, body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-print-color-adjust: exact;
     background-color: #fff;
   }
 
@@ -461,6 +463,8 @@ $gutter: 30px;
   .giftcard__content,
   .giftcard__border {
     border: 0 none;
+    padding: 0;
+    background-color: #fff;
   }
 
   .giftcard__actions,

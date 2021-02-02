@@ -1,9 +1,10 @@
 {
   "general": {
     "accessibility": {
-      "refresh_page": "Bir seçim yapmanız sayfanın tamamının yenilenmesine neden olur.",
+      "refresh_page": "bir seçim yapmanız sayfanın tamamının yenilenmesine neden olur",
       "unit_price_separator": "\/",
-      "selection_help": "Bir seçim yapmak için boşluk tuşuna sonra ok tuşlarına basın."
+      "new_window": "Yeni bir pencerede açılır.",
+      "new_window_and_external": "Harici web sitesini yeni bir pencerede açar."
     },
     "meta": {
       "tags": "\"{{ tags }}\" etiketlendi",
@@ -11,11 +12,7 @@
     },
     "404": {
       "title": "404 Sayfa Bulunamadı",
-      "subtext_html": "Aradığınız sayfa mevcut değil. Alışverişe devam etmek için <a href=\"{{ link }}\" class=\"text-link\">buraya tıklayın<\/a>."
-    },
-    "pagination": {
-      "previous": "Önceki",
-      "next": "Sonraki"
+      "subtext_html": "Talep ettiğiniz sayfa mevcut değil. Alışverişe devam etmek için <a href=\"{{ link }}\">buraya tıklayın<\/a>."
     },
     "password_page": {
       "login_form_heading": "Parolayı kullanarak mağazaya girin:",
@@ -27,7 +24,23 @@
       "admin_link_html": "Mağaza sahibi misiniz? <a href=\"\/admin\" class=\"text-link\">Buradan oturum açın<\/a>",
       "password_link": "Parola kullanarak girin",
       "powered_by_shopify_html": "Bu mağaza {{ shopify }} tarafından desteklenir",
-      "close": "kapat (esc)"
+      "close": "Kapat (Esc)"
+    },
+    "breadcrumbs": {
+      "home": "Ana Sayfa",
+      "home_link_title": "Ön sayfaya geri dönün"
+    },
+    "newsletter_form": {
+      "newsletter_email": "E-postanız",
+      "submit": "Abone ol",
+      "confirmation": "Abone olduğunuz için teşekkür ederiz"
+    },
+    "search": {
+      "no_results_html": "\"{{ terms }}\" aramanız sonuç vermedi.",
+      "results_for_html": "\"{{ terms }}\" aramanız aşağıdaki sonuçları verdi:",
+      "title": "Sitemizde ürün arayın",
+      "placeholder": "Ara",
+      "submit": "Ara"
     },
     "social": {
       "share_on_facebook": "Paylaş",
@@ -39,41 +52,18 @@
         "share_on_pinterest": "Pinterest'te pin ekle"
       }
     },
-    "newsletter_form": {
-      "newsletter_email": "Posta listemize kaydolun",
-      "newsletter_placeholder": "E-postanız",
-      "newsletter_confirmation": "Abone olduğunuz için teşekkür ederiz",
-      "submit": "Abone ol"
-    },
-    "search": {
-      "no_results_html": "\"{{ terms }}\" aramanız sonuç vermedi.",
-      "results_for_html": "\"{{ terms }}\" aramanız aşağıdaki sonuçları verdi:",
-      "title": "Ara",
-      "placeholder": "Mağazamızı arayın",
-      "submit": "Ara"
-    },
-    "drawers": {
-      "navigation": "Sitede gezinme",
-      "close_menu": "Menüyü kapat",
-      "expand_submenu": "Alt menüyü genişlet",
-      "collapse_submenu": "Alt menüyü daralt"
-    },
     "payment": {
-      "method": "Ödeme yöntemleri"
-    },
-    "currency": {
-      "dropdown_label": "Para birimi"
-    },
-    "language": {
-      "dropdown_label": "Dil"
+      "method": "Ödeme simgeleri"
     }
   },
   "blogs": {
     "article": {
+      "older_post": "Daha Eski Gönderi",
+      "newer_post": "Daha Yeni Gönderi",
       "tags": "Etiketler",
-      "read_more": "Okumaya devam et",
+      "comment_meta_html": "{{ date }} cihazında {{ author }}",
       "view_all": "Tümünü görüntüle",
-      "back_to_blog": "Geri dön: {{ title }}"
+      "read_more": "Devamını okuyun"
     },
     "comments": {
       "title": "Yorum yapın",
@@ -83,11 +73,11 @@
       "post": "Yorumu paylaş",
       "moderated": "Yorumların yayınlanabilmesi için onaylanması gerektiğini lütfen unutmayın",
       "success_moderated": "Yorumunuz başarıyla paylaşıldı. Blogumuz denetlendiğinden yorumunuzu kısa bir süre sonra yayınlayacağız.",
-      "success": "Yorumunuz başarıyla paylaşıldı! Teşekkürler!",
-      "with_count": {
-        "one": "{{ count }} yorum",
-        "other": "{{ count }} yorum"
-      }
+      "success": "Yorumunuz başarıyla paylaşıldı! Teşekkürler!"
+    },
+    "sidebar": {
+      "recent_articles": "Son Makaleler",
+      "categories": "Kategoriler"
     }
   },
   "cart": {
@@ -96,6 +86,7 @@
       "remove": "Kaldır",
       "note": "Satıcıya özel talimatlar",
       "subtotal": "Alt toplam",
+      "savings_html": "{{ price }} tasarruf ediyorsunuz",
       "taxes_and_shipping_at_checkout": "Vergiler ve kargo, ödeme sayfasında hesaplanır",
       "taxes_and_shipping_policy_at_checkout_html": "Vergiler ve <a href=\"{{ link }}\">kargo<\/a>, ödeme sayfasında hesaplanır",
       "taxes_included_but_shipping_at_checkout": "Vergi dahildir ve kargo, ödeme sayfasında hesaplanır",
@@ -103,28 +94,27 @@
       "update": "Sepeti Güncelle",
       "checkout": "Ödeme Yap",
       "empty": "Sepetiniz şu anda boş.",
+      "cookies_required": "Alışveriş sepetini kullanmak için çerezleri etkinleştirin",
       "continue_browsing_html": "<a href=\"{{ link }}\">Buradan<\/a> gezinmeye devam edin.",
-      "close_cart": "Sepeti Kapat",
-      "savings_html": "{{ savings }} tasarruf ediyorsunuz",
-      "reduce_quantity": "Ürün adedini bir azaltın",
-      "increase_quantity": "Ürün adedini bir artırın",
-      "cookies_required": "Alışveriş sepetini kullanmak için çerezleri etkinleştirin"
+      "continue_shopping": "Alışverişe devam et"
     },
     "label": {
+      "price": "Fiyat",
       "quantity": "Adet",
-      "total": "Toplam"
+      "total": "Toplam",
+      "add_note": "Siparişinize not ekleyin"
     }
   },
   "collections": {
     "general": {
-      "catalog_title": "Katalog",
-      "all_of_collection": "Tümü",
-      "no_matches": "Üzgünüz, bu koleksiyonda ürün yok."
+      "title": "Koleksiyonlar",
+      "no_matches": "Üzgünüz, bu koleksiyonda ürün yok",
+      "link_title": "{{ title }} koleksiyonumuza göz atın"
     },
     "sorting": {
       "title": "Sıralama ölçütü:",
-      "title_tags": "Filtreleme ölçütü:",
-      "all_of_collection": "Tüm {{ collection }}"
+      "browse": "Şuna göre göz at:",
+      "all_tags": "Tümü"
     }
   },
   "contact": {
@@ -154,7 +144,6 @@
     },
     "addresses": {
       "title": "Adresleriniz",
-      "default": "Varsayılan",
       "add_new": "Yeni Adres Ekle",
       "edit_address": "Adresi düzenle",
       "first_name": "Ad",
@@ -172,7 +161,8 @@
       "update": "Adresi Güncelle",
       "cancel": "İptal",
       "edit": "Düzenle",
-      "delete": "Sil"
+      "delete": "Sil",
+      "delete_confirm": "Bu adresi silmek istediğinizden emin misiniz?"
     },
     "login": {
       "title": "Oturum aç",
@@ -240,72 +230,77 @@
     }
   },
   "home_page": {
-    "slideshow": {
-      "navigation_instructions": "Slayt gösterisinde gezinmek için sol\/sağ okları kullanın veya mobil cihaz kullanıyorsanız parmağınızı sola\/sağa kaydırın",
-      "next_slide": "Sonraki slayt",
-      "previous_slide": "Önceki slayt",
-      "play": "Slayt gösterisini oynat",
-      "pause": "Slayt gösterisini duraklat",
-      "load_slide": "{{ slide_number }}. slaytı yükle",
-      "active_slide": "{{ slide_number }}. slayt, mevcut"
-    },
     "onboarding": {
       "product_vendor": "Ürün satıcısı",
       "product_title": "Örnek Ürün Başlığı",
-      "collection_title": "Örnek Koleksiyon Başlığı",
       "blog_title": "Gönderinizin başlığı",
       "blog_excerpt": "Mağazanız henüz blog gönderisi yayınlamadı. Satış sunulan yeni ürünlerden, ipuçlarından veya müşterilerinizle paylaşmak istediğiniz diğer haberlerden bahsetmek için bir blog kullanabilirsiniz. Kendi mağazanız ve blogunuz için fikir ve öneri almak üzere Shopify’ın e-ticaret bloguna göz atabilirsiniz.",
-      "no_content": "Bu bölümde şu anda içerik yok. Kenar çubuğunu kullanarak bu bölüme içerik ekleyin."
+      "collection_title": "Örnek Koleksiyon Başlığı"
     },
-    "map": {
-      "address_error": "Bu adres aranırken hata oluştu",
-      "address_no_results": "Bu adres için sonuç yok",
-      "address_query_limit_html": "Google API kullanım sınırını aştınız. <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">Premium Plan<\/a>'a yükseltmeyi düşünün.",
-      "auth_error_html": "Google Haritalar hesabınızın kimlik doğrulaması yapılırken sorun oluştu."
+    "slideshow": {
+      "previous_slide": "Önceki slayt",
+      "next_slide": "Sonraki slayt",
+      "pause": "Slayt gösterisini duraklat",
+      "play": "Slayt gösterisini oynat",
+      "load_slide": "{{ slide_number }}. slaytı yükle",
+      "active_slide": "{{ slide_number }}. slayt, mevcut",
+      "navigation_instructions": "Slayt gösterisinde gezinmek için sol\/sağ okları kullanın veya mobil cihaz kullanıyorsanız parmağınızı sola\/sağa kaydırın"
     }
   },
   "layout": {
+    "navigation": {
+      "menu": "Menü"
+    },
     "cart": {
       "title": "Sepet"
     },
     "customer": {
-      "account": "Hesap",
-      "log_out": "Oturumu Kapat",
-      "log_in": "Oturum Aç",
-      "create_account": "Hesap Oluşturun"
+      "account": "Hesabım",
+      "log_out": "Oturumu kapat",
+      "log_in": "Oturum aç",
+      "create_account": "Hesap oluştur",
+      "or": "veya"
     },
     "footer": {
-      "social_platform": "{{ platform }} cihazında {{ name }}"
+      "blog_title": "En Son Haberler",
+      "social_title": "Bizi Takip Edin",
+      "social_platform": "{{ platform }} cihazında {{ name }}",
+      "newsletter_title": "Bülten",
+      "copyright": "Telif Hakkı"
     }
   },
   "products": {
     "general": {
-      "save_html": "{{ saved_amount }}<br \/>tasarruf edin",
-      "collection_return": "Geri dön: {{ collection }}",
-      "sale_price": "Satış fiyatı",
-      "regular_price": "Normal fiyat",
+      "from_html": "{{ price }} hesabından",
       "include_taxes": "Vergi dahildir.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Kargo<\/a>, ödeme sayfasında hesaplanır.",
-      "unit_price": "Birim fiyat"
+      "share_title": "Bu Ürünü paylaşın"
     },
     "product": {
       "sold_out": "Tükendi",
-      "sold_out_html": "Tükendi",
+      "sale": "Satış",
       "unavailable": "Kullanım dışı",
+      "compare_at": "Şuna göre karşılaştır:",
       "quantity": "Adet",
       "add_to_cart": "Sepete Ekle",
+      "sale_price": "Satış fiyatı",
+      "regular_price": "Normal fiyat",
+      "description": "Açıklama",
       "full_details": "Tüm ayrıntılar",
-      "view_in_space": "Kendi alanınızda görüntüleyin",
-      "view_in_space_label": "Alanınızda görüntüleyin; ürün artırılmış gerçeklik penceresinde yüklenir",
-      "gallery_thumbnail_alt": "Görseli Galeri görüntüleyiciye yükleyin, {{ imageAlt }}",
-      "video_thumbnail_alt": "Videoyu Galeri görüntüleyiciye yükleyin ve burada izleyin, {{ imageAlt }}",
-      "model_thumbnail_alt": "3B modeli Galeri görüntüleyiciye yükleyin, {{ imageAlt }}",
-      "slide_label": "Slayt numarası: {{ slide_number }}\/{{ slide_max }}."
+      "unit_price_label": "Birim fiyatı"
     },
     "zoom": {
       "next": "Sonraki (Sağ ok tuşu)",
       "prev": "Önceki (Sol ok tuşu)",
       "close": "Kapat (Esc)"
+    }
+  },
+  "map": {
+    "errors": {
+      "address_error": "Bu adres aranırken hata oluştu",
+      "address_no_results": "Bu adres için sonuç yok",
+      "address_query_limit_html": "Google API kullanım sınırını aştınız. <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">Premium Plan<\/a>'a yükseltmeyi düşünün.",
+      "auth_error_html": "Google Haritalar API Anahtarınızın kimliği doğrulanırken sorun oluştu."
     }
   },
   "gift_cards": {

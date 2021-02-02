@@ -1,9 +1,10 @@
 {
   "general": {
     "accessibility": {
-      "refresh_page": "选择某一选项会使整个页面刷新。",
+      "refresh_page": "选择选项会使整页刷新",
       "unit_price_separator": "单价",
-      "selection_help": "先按空格键，然后使用箭头键来进行选择。"
+      "new_window": "在新窗口中打开。",
+      "new_window_and_external": "在新窗口中打开外部网站。"
     },
     "meta": {
       "tags": "标记为“{{ tags }}”",
@@ -11,11 +12,7 @@
     },
     "404": {
       "title": "找不到页面 404",
-      "subtext_html": "您查找的页面不存在。<a href=\"{{ link }}\" class=\"text-link\">单击此处<\/a>继续购物。"
-    },
-    "pagination": {
-      "previous": "Previous",
-      "next": "下一步"
+      "subtext_html": "您请求的页面不存在。单击<a href=\"{{ link }}\">此处<\/a>继续购物。"
     },
     "password_page": {
       "login_form_heading": "使用密码进入商店：",
@@ -27,7 +24,23 @@
       "admin_link_html": "您是否是店主？<a href=\"\/admin\" class=\"text-link\">在此处登录<\/a>",
       "password_link": "使用密码进入",
       "powered_by_shopify_html": "此商店由 {{ shopify }} 提供支持",
-      "close": "关闭 (esc)"
+      "close": "关闭 (Esc)"
+    },
+    "breadcrumbs": {
+      "home": "主页",
+      "home_link_title": "返回首页"
+    },
+    "newsletter_form": {
+      "newsletter_email": "您的电子邮件",
+      "submit": "订阅",
+      "confirmation": "感谢您订阅"
+    },
+    "search": {
+      "no_results_html": "您对“{{ terms }}”的搜索并未出现任何结果。",
+      "results_for_html": "您对“{{ terms }}”的搜索显示内容如下：",
+      "title": "在我们的网站上搜索产品",
+      "placeholder": "搜索",
+      "submit": "搜索"
     },
     "social": {
       "share_on_facebook": "共享",
@@ -39,41 +52,18 @@
         "share_on_pinterest": "固定在 Pinterest 上"
       }
     },
-    "newsletter_form": {
-      "newsletter_email": "注册我们的邮件列表",
-      "newsletter_placeholder": "您的电子邮件",
-      "newsletter_confirmation": "感谢您订阅",
-      "submit": "订阅"
-    },
-    "search": {
-      "no_results_html": "您对“{{ terms }}”的搜索并未出现任何结果。",
-      "results_for_html": "您对“{{ terms }}”的搜索显示内容如下：",
-      "title": "搜索",
-      "placeholder": "搜索我们的商店",
-      "submit": "搜索"
-    },
-    "drawers": {
-      "navigation": "网站网站地图",
-      "close_menu": "关闭菜单",
-      "expand_submenu": "展开子菜单",
-      "collapse_submenu": "折叠子菜单"
-    },
     "payment": {
-      "method": "支付方式"
-    },
-    "currency": {
-      "dropdown_label": "货币"
-    },
-    "language": {
-      "dropdown_label": "语言"
+      "method": "付款图标"
     }
   },
   "blogs": {
     "article": {
+      "older_post": "较旧的文章",
+      "newer_post": "较新的文章",
       "tags": "标签",
-      "read_more": "继续查看",
+      "comment_meta_html": "{{ date }} 上的 {{ author }}",
       "view_all": "查看全部",
-      "back_to_blog": "返回到 {{ title }}"
+      "read_more": "阅读详细内容"
     },
     "comments": {
       "title": "发表评论",
@@ -83,11 +73,11 @@
       "post": "发布评论",
       "moderated": "请注意，评论必须在发布之前获得批准",
       "success_moderated": "您的评论已成功发布。由于我们的博客要经过审核，我们会在稍后将其发布。",
-      "success": "您的评论已成功发布！谢谢！",
-      "with_count": {
-        "one": "{{ count }} 条评论",
-        "other": "{{ count }} 条评论"
-      }
+      "success": "您的评论已成功发布！谢谢！"
+    },
+    "sidebar": {
+      "recent_articles": "最近的文章",
+      "categories": "类别"
     }
   },
   "cart": {
@@ -96,6 +86,7 @@
       "remove": "删除",
       "note": "卖家须知",
       "subtotal": "小计",
+      "savings_html": "您正在保存 {{ price }}",
       "taxes_and_shipping_at_checkout": "结账时计算的税金和运费",
       "taxes_and_shipping_policy_at_checkout_html": "结账时计算的税金和<a href=\"{{ link }}\">运费<\/a>",
       "taxes_included_but_shipping_at_checkout": "结账时计算的税金（包含）和运费",
@@ -103,28 +94,27 @@
       "update": "更新购物车",
       "checkout": "结账",
       "empty": "您的购物车当前是空的。",
+      "cookies_required": "启用 Cookie 以使用购物车",
       "continue_browsing_html": "继续浏览<a href=\"{{ link }}\">此处<\/a>。",
-      "close_cart": "关闭购物车",
-      "savings_html": "您正在保存 {{ savings }}",
-      "reduce_quantity": "将产品数量减少一件",
-      "increase_quantity": "将产品数量增加一件",
-      "cookies_required": "启用 Cookie 以使用购物车"
+      "continue_shopping": "继续购物"
     },
     "label": {
+      "price": "价格",
       "quantity": "数量",
-      "total": "总计"
+      "total": "总计",
+      "add_note": "为订单添加备注"
     }
   },
   "collections": {
     "general": {
-      "catalog_title": "产品目录",
-      "all_of_collection": "所有",
-      "no_matches": "抱歉，此产品系列中没有产品"
+      "title": "产品系列",
+      "no_matches": "抱歉，此产品系列中没有产品",
+      "link_title": "浏览我们的 {{ title }} 产品系列"
     },
     "sorting": {
       "title": "排序方式",
-      "title_tags": "筛选条件",
-      "all_of_collection": "所有 {{ collection }}"
+      "browse": "浏览条件",
+      "all_tags": "所有"
     }
   },
   "contact": {
@@ -154,7 +144,6 @@
     },
     "addresses": {
       "title": "您的地址",
-      "default": "默认",
       "add_new": "添加新地址",
       "edit_address": "编辑地址",
       "first_name": "名字",
@@ -172,7 +161,8 @@
       "update": "更新地址",
       "cancel": "取消",
       "edit": "编辑",
-      "delete": "删除"
+      "delete": "删除",
+      "delete_confirm": "确定要删除此地址吗？"
     },
     "login": {
       "title": "登录",
@@ -240,72 +230,77 @@
     }
   },
   "home_page": {
-    "slideshow": {
-      "navigation_instructions": "使用左\/右箭头浏览幻灯片或者在使用移动设备时向左\/向右轻扫",
-      "next_slide": "下一张幻灯片",
-      "previous_slide": "上一张幻灯片",
-      "play": "播放幻灯片",
-      "pause": "暂停幻灯片",
-      "load_slide": "加载幻灯片 {{ slide_number }}",
-      "active_slide": "当前幻灯片 {{ slide_number }}"
-    },
     "onboarding": {
       "product_vendor": "产品供应商",
       "product_title": "产品标题示例",
-      "collection_title": "产品系列标题示例",
       "blog_title": "您的文章的标题",
       "blog_excerpt": "您的商店尚未发布任何博客文章。博客可用于介绍新产品的发布、提示或您想与客户分享的其他消息。您可以查看 Shopify 的电子商务博客，以获得可用于您的商店和博客的灵感以及建议。",
-      "no_content": "此部分目前不包含任何内容。使用侧边栏向此部分添加内容。"
+      "collection_title": "产品系列标题示例"
     },
-    "map": {
-      "address_error": "查找该地址时出错",
-      "address_no_results": "未找到该地址的结果",
-      "address_query_limit_html": "您已超过 Google API 使用限制。考虑升级到<a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">高级套餐<\/a>。",
-      "auth_error_html": "对您的 Maps 账户进行身份验证时出现问题。"
+    "slideshow": {
+      "previous_slide": "上一张幻灯片",
+      "next_slide": "下一张幻灯片",
+      "pause": "暂停幻灯片",
+      "play": "播放幻灯片",
+      "load_slide": "加载幻灯片 {{ slide_number }}",
+      "active_slide": "当前幻灯片 {{ slide_number }}",
+      "navigation_instructions": "使用左\/右箭头浏览幻灯片或者在使用移动设备时向左\/向右轻扫"
     }
   },
   "layout": {
+    "navigation": {
+      "menu": "菜单"
+    },
     "cart": {
       "title": "购物车"
     },
     "customer": {
-      "account": "账户",
+      "account": "我的账户",
       "log_out": "登出",
       "log_in": "登录",
-      "create_account": "创建账户"
+      "create_account": "创建账户",
+      "or": "或"
     },
     "footer": {
-      "social_platform": "{{ platform }} 上的 {{ name }}"
+      "blog_title": "最新消息",
+      "social_title": "关注我们",
+      "social_platform": "{{ platform }} 上的 {{ name }}",
+      "newsletter_title": "新闻通讯",
+      "copyright": "版权"
     }
   },
   "products": {
     "general": {
-      "save_html": "保存<br \/>{{ saved_amount }}",
-      "collection_return": "返回到 {{ collection }}",
-      "sale_price": "销售价格",
-      "regular_price": "常规价格",
+      "from_html": "来自 {{ price }}",
       "include_taxes": "税金（包含）。",
       "shipping_policy_html": "结账时计算的<a href=\"{{ link }}\">运费<\/a>。",
-      "unit_price": "单价"
+      "share_title": "分享此产品"
     },
     "product": {
       "sold_out": "售罄",
-      "sold_out_html": "售罄",
+      "sale": "销售额",
       "unavailable": "不可用",
+      "compare_at": "比较",
       "quantity": "数量",
       "add_to_cart": "添加到购物车",
+      "sale_price": "销售价格",
+      "regular_price": "常规价格",
+      "description": "描述",
       "full_details": "全部详细信息",
-      "view_in_space": "在您的空间中查看",
-      "view_in_space_label": "在您的空间中查看，在增强现实窗口中加载产品",
-      "gallery_thumbnail_alt": "将图片加载到图库查看器，{{ imageAlt }}",
-      "video_thumbnail_alt": "在图库查看器中加载和播放视频，{{ imageAlt }}",
-      "model_thumbnail_alt": "将 3D 模型加载到图库查看器，{{ imageAlt }}",
-      "slide_label": "第 {{ slide_number }} 张幻灯片，共 {{ slide_max }} 张。"
+      "unit_price_label": "单价"
     },
     "zoom": {
       "next": "下一个（右箭头键）",
       "prev": "上一个（左箭头键）",
       "close": "关闭 (Esc)"
+    }
+  },
+  "map": {
+    "errors": {
+      "address_error": "查找该地址时出错",
+      "address_no_results": "未找到该地址的结果",
+      "address_query_limit_html": "您已超过 Google API 使用限制。考虑升级到<a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">高级套餐<\/a>。",
+      "auth_error_html": "对您的 Google 地图 API 密钥进行身份验证时出现问题。"
     }
   },
   "gift_cards": {
