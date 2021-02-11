@@ -1,11 +1,11 @@
 {
   "current": {
     "enable_wide_layout": false,
-    "color_topbar_bg": "#1b1e2f",
+    "color_topbar_bg": "#3b3f58",
     "color_body_bg": "#faf9f7",
-    "color_footer_bg": "#1b1e2f",
+    "color_footer_bg": "#3c4266",
     "color_borders": "#faf9f7",
-    "color_primary": "#d77e6a",
+    "color_primary": "#b77566",
     "color_button_primary_text": "#ffffff",
     "color_topbar_text": "#ffffff",
     "color_header_text": "#1b1e2f",
@@ -100,23 +100,11 @@
               "image": "shopify:\/\/shop_images\/cafe-illustrations.jpg",
               "alignment": "right bottom",
               "overlay_opacity": 34,
-              "color_text": "#ffffff",
-              "text_alignment": "center",
-              "slide_heading": "Image slide",
-              "button_label": ""
-            }
-          },
-          "slider-1": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Artboard_1-100.jpg",
+
               "alignment": "center center",
               "overlay_opacity": 30,
-              "color_text": "#ffffff",
-              "text_alignment": "center",
-              "slide_heading": "Image slide",
-              "button_label": ""
-            }
+
+              "image": "shopify:\/\/shop_images\/Artboard_1-100.jpg",
           },
           "slider-2": {
             "type": "image",
