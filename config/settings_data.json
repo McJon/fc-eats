@@ -44,10 +44,14 @@
         "type": "header",
         "settings": {
           "header_search_enable": true,
+          "logo": "shopify:\/\/shop_images\/FC_ChefsTable_alternate_black-red.png",
           "logo_max_width": "90",
+          "nav_menu": "main-menu",
           "nav_below_logo": false,
           "left_aligned_logo": true,
-          "show_header_lines": true
+          "show_header_lines": true,
+          "show_announcement": true,
+          "header_text": "Announce something here"
         }
       },
       "footer": {
@@ -62,6 +66,7 @@
           "footer-1": {
             "type": "menu",
             "settings": {
+              "menu_title": "Links",
               "menu": "footer"
             }
           },
@@ -71,7 +76,9 @@
           },
           "footer-3": {
             "type": "newsletter",
-            "settings": {}
+            "settings": {
+              "subtext": "<p>Sign up for the latest news, offers and styles<\/p>"
+            }
           }
         },
         "block_order": [
@@ -89,15 +96,38 @@
         "blocks": {
           "slider-0": {
             "type": "image",
-            "settings": {}
+            "settings": {
+              "image": "shopify:\/\/shop_images\/cafe-illustrations.jpg",
+              "alignment": "right bottom",
+              "overlay_opacity": 34,
+              "color_text": "#ffffff",
+              "text_alignment": "center",
+              "slide_heading": "Image slide",
+              "button_label": ""
+            }
           },
           "slider-1": {
             "type": "image",
-            "settings": {}
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Artboard_1-100.jpg",
+              "alignment": "center center",
+              "overlay_opacity": 30,
+              "color_text": "#ffffff",
+              "text_alignment": "center",
+              "slide_heading": "Image slide",
+              "button_label": ""
+            }
           },
           "slider-2": {
             "type": "image",
-            "settings": {}
+            "settings": {
+              "alignment": "center center",
+              "overlay_opacity": 30,
+              "color_text": "#ffffff",
+              "text_alignment": "center",
+              "slide_heading": "Image slide",
+              "button_label": ""
+            }
           }
         },
         "block_order": [
@@ -106,9 +136,11 @@
           "slider-2"
         ],
         "settings": {
+          "slider_height": "small",
           "slider_autorotate": false,
           "slider_autorotate_rate": 5,
-          "slider_home_transition": "fade"
+          "slider_home_transition": "fade",
+          "text_size": "medium"
         }
       },
       "featured-collection": {
@@ -161,10 +193,13 @@
       "featured-product": {
         "type": "featured-product",
         "settings": {
+          "featured_product": "",
           "product_vendor_enable": false,
           "product_quantity_enable": false,
           "product_image_zoom_type": "lightbox",
-          "social_sharing": false
+          "social_sharing": false,
+          "enable_payment_button": true,
+          "add_to_cart_width": "small"
         }
       },
       "featured-blog": {
