@@ -1,0 +1,51 @@
+
+{% if section.settings.toggle %}
+<div class="message-bar">
+{% if section.settings.message_header != blank %}
+<h2>{{section.settings.message_header}}</h2>
+{% endif %}
+
+{% if section.settings.link_content %}
+<a href="#">{{section.settings.link_content}}</a>
+
+{% unless section.settings.message_content == blank %}
+<p>{{section.settings.message_content}}</p>
+{% endunless %}
+
+{% endif %}
+
+<button>&#10062;</button>
+{% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Announcement",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "toggle",
+        "label": "Toggle Message Bar",
+        "default": false
+
+      },
+      {
+        "type": "text",
+        "id": "message_header",
+        "label": "Message Header"
+
+      },
+      {
+        "type": "textarea",
+        "id": "message_content",
+        "label": "Message Content"
+
+      },
+      {
+        "type": "page",
+        "id": "link_content",
+        "label": "Link Content"
+
+      }
+    ]
+  }
+{% endschema %}

@@ -44,7 +44,6 @@
         "type": "header",
         "settings": {
           "header_search_enable": true,
-          "logo": "shopify:\/\/shop_images\/FC_ChefsTable_alternate_black-red.png",
           "logo_max_width": "90",
           "nav_menu": "main-menu",
           "nav_below_logo": false,
@@ -97,14 +96,24 @@
           "slider-0": {
             "type": "image",
             "settings": {
-              "image": "shopify:\/\/shop_images\/cafe-illustrations.jpg",
-              "alignment": "right bottom",
-              "overlay_opacity": 34,
-
               "alignment": "center center",
               "overlay_opacity": 30,
-
-              "image": "shopify:\/\/shop_images\/Artboard_1-100.jpg",
+              "color_text": "#ffffff",
+              "text_alignment": "center",
+              "slide_heading": "Image slide",
+              "button_label": ""
+            }
+          },
+          "slider-1": {
+            "type": "image",
+            "settings": {
+              "alignment": "center center",
+              "overlay_opacity": 30,
+              "color_text": "#ffffff",
+              "text_alignment": "center",
+              "slide_heading": "Image slide",
+              "button_label": ""
+            }
           },
           "slider-2": {
             "type": "image",
