@@ -1,0 +1,47 @@
+{% if section.settings.toggle %}
+<div class="message-bar">
+<!-- to be able to change text in shopify -->
+{% if section.settings.message_header != blank %}
+  <h2>{{ section.settings.message_header }}</h2>
+  {% endif %}
+
+{% if section.settings.homepage %}
+  <a href="/pages/{{ section.settings.homepage }}">Go to the page</a>
+{% endif %}
+
+  {% unless section.settings.message_content == blank %}
+  <p>{{ section.settings.message_content }}</p>
+  {% endunless %}
+  <button>&#10062;</button>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name" : "Announcement",
+  "settings": [
+    {
+   "type": "page",
+   "id": "homepage",
+   "label": "Link to page"
+},
+    {
+   "type": "checkbox",
+   "id": "toggle",
+   "label": "Toggle Message Bar",
+   "default": false
+},
+     {
+      "type": "textarea",
+      "id": "message_header",
+      "label": "Message Header"
+    },
+    {
+      "type": "textarea",
+      "id": "message_content",
+      "label": "Message Content"
+    }
+  ]
+}
+{% endschema %}
+

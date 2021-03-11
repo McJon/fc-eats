@@ -102,7 +102,7 @@
           <span class="h3" itemprop="brand">{{ vendor }}</span>
         {% endif %}
         <h1 class="product-single__title" itemprop="name">{{ title }}</h1>
-
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
           <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
@@ -117,6 +117,7 @@
             <span id="ProductPrice" class="product-single__price" itemprop="price" content="{{ price | divided_by: 100.00 }}">
               {{ price | money }}
             </span>
+
 
             {% if compare_at_price > price %}
               <span id="PriceA11y" class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>

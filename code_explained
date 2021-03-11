@@ -1,0 +1,39 @@
+
+
+1
+in schema in settings we have
+
+{
+   "type": "checkbox",
+   "id": "toggle",
+   "label": "Toggle Message Bar",
+   "default": false
+},
+
+and then we have if
+
+{% if section.settings.toggle %}
+<div class="message-bar">
+//all code
+</div>
+{% endif %}
+
+so that if in shopify we do have checkbox the content well be displayed,
+if not not
+
+2
+I a dded this /pages/ because it did not work when trying to go to url
+from homepage and not from [ages
+]
+{% if section.settings.homepage %}
+  <a href="/pages/{{ section.settings.homepage }}">Go to the page</a>
+{% endif %}
+
+and this is what allows to choose the page to go to from shopify
+
+    {
+   "type": "page",
+   "id": "homepage",
+   "label": "Link to page"
+},
+
