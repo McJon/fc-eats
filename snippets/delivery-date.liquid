@@ -1,7 +1,7 @@
   {{ '//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' | stylesheet_tag }}
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" defer="defer"></script>
 
-  <div style="width:300px; clear:both;">
+  <div class="delivery-date" style="width:300px; clear:both;">
     <p>
       <label for="date">Pick a delivery date:</label>
       <input id="date" type="text" name="attributes[date]" value="{{ cart.attributes.date }}" />

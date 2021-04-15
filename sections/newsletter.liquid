@@ -1,55 +1,67 @@
 <style>
-  .newsletter-grid__item {
-    background-color: {{ section.settings.color_bg }};
+  .newsletter-wrapper--{{ section.id }} input[type='email']::-webkit-input-placeholder {
+    color: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} input[type='email']::-moz-placeholder {
+    color: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} input[type='email']:-ms-input-placeholder {
+    color: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} input[type='email']::placeholder {
+    color: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} .input-group--underline {
+    border-bottom: 2px solid {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} .icon {
+    fill: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} .btn--newsletter__submit {
+    color: {{ section.settings.text_color }};
+    fill: {{ section.settings.text_color }};
+  }
+  .newsletter-wrapper--{{ section.id }} .form-success {
+    color: {{ section.settings.text_color }};
   }
 
-  .newsletter-grid__item:first-child {
-    background-color: {{ section.settings.color_bg | color_modify: 'alpha', 0.5 }};
-  }
+  {% if section.settings.background_color != blank %}
+    .newsletter-wrapper--{{ section.id }} {
+      background-color: {{ section.settings.background_color }};
+    }
+  {% endif %}
 </style>
 
-<div class="grid-uniform newsletter-grid">
-  <div class="grid__item newsletter-grid__item post-large--one-half">
-    <div class="newsletter-content-wrapper">
-      <div class="newsletter-content">
-        {% unless section.settings.heading == blank %}
-        <div class="section-header section-header--small">
-          <h2 class="section-header__title{% unless section.settings.subtext == blank %} section-header__title-spacing{% endunless %}">
-            {{ section.settings.heading | escape }}
-          </h2>
+<div class="newsletter-wrapper newsletter-wrapper--{{ section.id }} one-whole" data-section-id="{{ section.id }}" data-section-type="newsletter">
+  <div class="page-width">
+    {% form 'customer' %}
+      <h2 class="newsletter__heading">{{ section.settings.heading | escape }}</h2>
+      {% unless section.settings.subheading == blank %}
+        <div class="newsletter__subheading rte">{{ section.settings.subheading }}</div>
+      {% endunless %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="input-group--underline" data-animate>
+        <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" name="contact[email]" class="input-group__field" id="EmailField{{ section.id }}" aria-label="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" autocorrect="off" autocapitalize="off">
+        <div class="input-group__btn input-group__btn--newsletter">
+          <button type="submit" class="btn--newsletter__submit">
+            {{ 'general.newsletter_form.submit' | t }}
+            {% include 'icon-arrow-right' %}
+          </button>
         </div>
-        {% endunless %}
-        {% unless section.settings.subtext == blank %}
-          {{ section.settings.subtext }}
-        {% endunless %}
       </div>
-    </div>
-  </div>
-
-  <div class="grid__item newsletter-grid__item post-large--one-half">
-    <div class="newsletter-content-wrapper">
-      <div class="newsletter-content">
-        {% form 'customer' %}
-          {{ form.errors | default_errors }}
-          {% if form.posted_successfully? %}
-            <p class="note form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
-          {% else %}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            <div class="input-group">
-              <label for="Email" class="visually-hidden">{{ 'contact.form.email' | t }}</label>
-              <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
-              <span class="input-group-btn">
-                <button type="submit" class="btn" name="commit" id="subscribe">{{ 'general.newsletter_form.submit' | t }}</button>
-              </span>
-            </div>
-          {% endif %}
-        {% endform %}
+      <div class="newsletter__message" aria-role="alert">
+        {% if form.posted_successfully? %}
+          <p class="form-success" aria-role="alert">
+            {% unless section.settings.success_message == blank %}
+              {{ section.settings.success_message | escape }}
+            {% endunless %}
+          </p>
+        {% endif %}
+        {{ form.errors | default_errors }}
       </div>
-    </div>
+    {% endform %}
   </div>
 </div>
-
-
 
 {% schema %}
 {
@@ -76,7 +88,7 @@
     "zh-CN": "新闻通讯",
     "zh-TW": "電子報"
   },
-  "class": "newsletter-section index-section",
+  "class": "index-section index-section--newsletter",
   "settings": [
     {
       "type": "text",
@@ -111,14 +123,14 @@
         "en": "Subscribe to our newsletter",
         "es": "Suscríbete a nuestro boletín de noticias",
         "fi": "Tilaa uutiskirjeemme",
-        "fr": "Inscription à la newsletter",
+        "fr": "S'inscrire à la newsletter",
         "it": "Iscriviti alla nostra newsletter",
         "ja": "ストアからのお知らせを受け取る",
         "ko": "뉴스 레터 구독",
         "nb": "Abonner på nyhetsbrevet vårt",
         "nl": "Abonneren op onze nieuwsbrief",
         "pl": "Zapisz się do naszego newslettera",
-        "pt-BR": "Assine a nossa newsletter",
+        "pt-BR": "Receber nosso newsletter",
         "pt-PT": "Subscreva a nossa newsletter",
         "sv": "Prenumerera på vårt nyhetsbrev",
         "th": "สมัครรับจดหมายข่าวของเรา",
@@ -130,29 +142,29 @@
     },
     {
       "type": "richtext",
-      "id": "subtext",
+      "id": "subheading",
       "label": {
-        "cs": "Text nižší úrovně",
-        "da": "Undertekst",
-        "de": "Subtext",
-        "en": "Subtext",
-        "es": "Subtexto",
-        "fi": "Alateksti",
-        "fr": "Sous-texte",
-        "it": "Sottotesto",
-        "ja": "サブテキスト",
-        "ko": "하위 텍스트",
-        "nb": "Undertekst",
-        "nl": "Subtekst",
-        "pl": "Tekst podrzędny",
-        "pt-BR": "Subtexto",
-        "pt-PT": "Subtexto",
-        "sv": "Undertext",
-        "th": "ข้อความรอง",
-        "tr": "Alt metin",
-        "vi": "Văn bản phụ",
-        "zh-CN": "子文本",
-        "zh-TW": "子文字"
+        "cs": "Podnadpis",
+        "da": "Underoverskrift",
+        "de": "Unter-Überschrift",
+        "en": "Subheading",
+        "es": "Subtítulo",
+        "fi": "Alaotsikko",
+        "fr": "Sous-titre",
+        "it": "Sottotitolo",
+        "ja": "小見出し",
+        "ko": "소제목",
+        "nb": "Underoverskrift",
+        "nl": "Subkop",
+        "pl": "Nagłówek podrzędny",
+        "pt-BR": "Subtítulo",
+        "pt-PT": "Subtítulo",
+        "sv": "Underrubrik",
+        "th": "หัวเรื่องย่อย",
+        "tr": "Alt başlık",
+        "vi": "Tiêu đề phụ",
+        "zh-CN": "副标题",
+        "zh-TW": "子標題"
       },
       "default": {
         "cs": "<p>Získejte informace o propagačních akcích, nových produktech a slevách – přímo do své schránky.</p>",
@@ -168,7 +180,7 @@
         "nb": "<p>Kampanjer, nye produkter og salg. Direkte i innboksen din.</p>",
         "nl": "<p>Promoties, nieuwe producten en uitverkoop rechtstreeks in je inbox.</p>",
         "pl": "<p>Promocje, nowe produkty i wyprzedaże. Bezpośrednio do Twojej skrzynki odbiorczej.</p>",
-        "pt-BR": "<p>Promoções, novos produtos e ofertas, diretamente em sua caixa de entrada.</p>",
+        "pt-BR": "<p>Promoções, novos produtos e vendas. Diretamente para sua caixa de entrada.</p>",
         "pt-PT": "<p>Promoções, novos produtos e ofertas. Diretamente na sua caixa de entrada.</p>",
         "sv": "<p>Kampanjer, nya produkter och försäljning. Direkt till din inkorg.</p>",
         "th": "<p>โปรโมชัน สินค้าใหม่ และการลดราคา ตรงสู่กล่องจดหมายเข้าของคุณ</p>",
@@ -179,14 +191,92 @@
       }
     },
     {
+      "type": "text",
+      "id": "success_message",
+      "label": {
+        "cs": "Děkovná zpráva",
+        "da": "Udført-besked",
+        "de": "Erfolgsmeldung",
+        "en": "Success message",
+        "es": "Mensaje de éxito",
+        "fi": "Onnistumisilmoitus",
+        "fr": "Message de réussite",
+        "it": "Messaggio operazione riuscita",
+        "ja": "成功のメッセージ",
+        "ko": "성공 메시지",
+        "nb": "Suksessmelding",
+        "nl": "Succesbericht",
+        "pl": "Komunikat pomyślnego wykonania",
+        "pt-BR": "Mensagem de sucesso",
+        "pt-PT": "Mensagem de sucesso",
+        "sv": "Framgångsbudskap",
+        "th": "ข้อความยืนยันการดำเนินการเสร็จสมบูรณ์",
+        "tr": "Başarı mesajı",
+        "vi": "Tin nhắn thành công",
+        "zh-CN": "成功消息",
+        "zh-TW": "成功訊息"
+      },
+      "default": {
+        "cs": "Děkujeme za přihlášení k odběru",
+        "da": "Tak for dit abonnement",
+        "de": "Danke für deine Anmeldung",
+        "en": "Thanks for subscribing",
+        "es": "Gracias por su suscripción",
+        "fi": "Kiitos tilauksesta",
+        "fr": "Merci pour votre abonnement",
+        "it": "Grazie per l'iscrizione",
+        "ja": "ご登録ありがとうございます",
+        "ko": "구독해주셔서 감사드립니다.",
+        "nb": "Takk for at du abonnerer",
+        "nl": "Bedankt voor het abonneren",
+        "pl": "Dziękujemy za subskrypcję",
+        "pt-BR": "Obrigado por se inscrever",
+        "pt-PT": "Obrigado pela sua subscrição",
+        "sv": "Tack för att du prenumererar",
+        "th": "ขอขอบคุณที่สมัครรับข้อมูล",
+        "tr": "Abone olduğunuz için teşekkür ederiz",
+        "vi": "Cảm ơn bạn đã đăng ký",
+        "zh-CN": "感谢您订阅",
+        "zh-TW": "感謝您願意訂閱"
+      }
+    },
+    {
       "type": "color",
-      "id": "color_bg",
+      "id": "text_color",
+      "label": {
+        "cs": "Barva textu",
+        "da": "Tekstfarve",
+        "de": "Textfarbe",
+        "en": "Text color",
+        "es": "Color de la fuente",
+        "fi": "Tekstin väri",
+        "fr": "Couleur du texte",
+        "it": "Colore del testo",
+        "ja": "テキストの配色",
+        "ko": "텍스트 색상",
+        "nb": "Tekstfarge",
+        "nl": "Tekstkleur",
+        "pl": "Kolor tekstu",
+        "pt-BR": "Cor do texto",
+        "pt-PT": "Cor do texto",
+        "sv": "Textfärg",
+        "th": "สีข้อความ",
+        "tr": "Metin rengi",
+        "vi": "Màu chữ",
+        "zh-CN": "文本颜色",
+        "zh-TW": "文字顏色"
+      },
+      "default": "#242424"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
       "label": {
         "cs": "Barva pozadí",
         "da": "Baggrundsfarve",
         "de": "Hintergrundfarbe",
         "en": "Background color",
-        "es": "Color de fondo",
+        "es": "Color del fondo",
         "fi": "Taustaväri",
         "fr": "Couleur de fond",
         "it": "Colore sfondo",
@@ -204,32 +294,32 @@
         "zh-CN": "背景色",
         "zh-TW": "背景顏色"
       },
-      "default": "#eeeeee"
+      "default": "#f3f4f3"
     },
     {
       "type": "paragraph",
       "content": {
-        "cs": "Pro všechny zákazníky, kteří se zaregistrují, se v Shopify vytvoří účet. [Zobrazit zákazníky](/admin/customers?query=&accepts_marketing=1)",
-        "da": "Alle kunder, der tilmelder sig, får oprettet en konto i Shopify. [Se kunder](/admin/customers?query=&accepts_marketing=1)",
-        "de": "Für alle Kunden, die sich registrieren, wird in Shopify ein Konto erstellt. [Kunden ansehen](/admin/customers?query=&accepts_marketing=1)",
-        "en": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)",
-        "es": "Todos los clientes que se registren tendrán una cuenta creada para ellos en Shopify. [Ver clientes](/admin/customers?query=&accepts_marketing=1)",
-        "fi": "Tilaaville asiakkaille luodaan tili Shopifyssa. [Näytä asiakkaat](/admin/customers?query=&accepts_marketing=1)",
-        "fr": "Un compte sera créé dans Shopify pour les abonnés qui s'inscrivent. [Afficher les abonnés](/admin/customers?query=&accepts_marketing=1)",
-        "it": "Qualsiasi cliente che si iscrive avrà un account creato appositamente per lui su Shopify. [Visualizza clienti](/admin/customers?query=&accepts_marketing=1)",
-        "ja": "サインアップしたお客様は、Shopifyでアカウントが作成されます。[お客様を表示する](/admin/customers?query=&accepts_marketing=1)",
-        "ko": "가입한 고객은 Shopify에서 생성된 계정을 보유하게 됩니다. [고객 보기](/admin/customers?query=&accepts_marketing=1)",
-        "nb": "Alle kunder som melder seg på, vil få opprettet en konto i Shopify. [Se kunder](/admin/customers?query=&accepts_marketing=1)",
-        "nl": "Voor alle klanten die zich aanmelden, wordt een Shopify-account gemaakt. [Bekijk klanten](/admin/customers?query=&accepts_marketing=1)",
-        "pl": "Dla wszystkich klientów, którzy się zarejestrują, utworzone zostaną konta w Shopify. [Wyświetl klientów](/admin/customers?query=&accepts_marketing=1)",
-        "pt-BR": "Todos os clientes que se inscreverem terão uma conta criada para eles na Shopify. [Visualizar clientes](/admin/customers?query=&accepts_marketing=1)",
-        "pt-PT": "Será criada uma conta na Shopify para todos os clientes que se registarem. [Ver clientes](/admin/customers?query=&accepts_marketing=1)",
-        "sv": "Alla kunder som registrerar sig kommer att få ett konto skapat i Shopify. [Visa kunder](/admin/customers?query=&accepts_marketing=1)",
-        "th": "ระบบจะสร้างบัญชีผู้ใช้ใน Shopify ให้แก่ลูกค้ารายที่ลงทะเบียนแล้ว [ดูลูกค้า](/admin/customers?query=&accepts_marketing=1)",
-        "tr": "Kaydolan tüm müşteriler için Shopify'da bir hesap oluşturulur. [Müşterileri görüntüleyin](/admin/customers?query=&accepts_marketing=1)",
-        "vi": "Bất kỳ khách hàng nào đăng ký sẽ được tạo tài khoản trong Shopify. [Xem khách hàng](/admin/customers?query=&accepts_marketing=1)",
-        "zh-CN": "任何注册用户都将在 Shopify 中拥有一个为他们创建的账户。[查看客户](/admin/customers?query=&accepts_marketing=1)",
-        "zh-TW": "顧客註冊後就可以擁有 Shopify 帳號。[查看顧客](/admin/customers?query=&accepts_marketing=1)"
+        "cs": "E-mailová adresa zákazníků, kteří se přihlásí k odběru, bude přidána do seznamu příjemců marketingu. [Zobrazit zákazníky](/admin/customers?query=&accepts_marketing=1)",
+        "da": "Kunder, der tilmelder sig, får føjet deres mailadresser til listen \"accepterer markedsføring\". [Se kunder](/admin/customers?query=&accepts_marketing=1)",
+        "de": "E-Mail-Adressen der Kunden, die einen Newsletter abonnieren, werden der Liste der Empfänger, die Marketingmaterial akzeptieren, hinzugefügt. [Kunden ansehen](/admin/customers?query=&accepts_marketing=1)",
+        "en": "Customers who subscribe will have their email address added to the \"accepts marketing\" list. [View customers](/admin/customers?query=&accepts_marketing=1)",
+        "es": "Se añadirá la dirección de correo electrónico de los clientes que se suscriban a la lista \"acepta marketing\". [Ver clientes](/admin/customers?query=&accepts_marketing=1)",
+        "fi": "Tilaavien asiakkaiden sähköpostiosoitteet lisätään \"hyväksyy markkinoinnin\" ‑luetteloon. [Näytä asiakkaat ](/admin/customers?query=&accepts_marketing=1)",
+        "fr": "Les clients qui s'abonnent verront leur adresse e-mail ajoutée à la liste « Accepte le marketing ». [Afficher les clients](/admin/customers?query=&accepts_marketing=1)",
+        "it": "L'indirizzo email dei clienti che si iscrivono verrà aggiunto all'elenco \"Accetta marketing\". [Visualizza clienti](/admin/customers?query=&accepts_marketing=1)",
+        "ja": "お客様のメールアドレスは、登録する際に「マーケティングを受け入れる」リストに追加されます。[お客様を表示する](/admin/customers?query=&accepts_marketing=1)",
+        "ko": "가입하는 고객은 \"마케팅 수락\" 목록에 자신의 이메일 주소가 추가됩니다. [고객 보기](/admin/customers?query=&accepts_marketing=1)",
+        "nb": "Kunder som abonnerer får sin e-postadresse lagt til listen «godtar markedsføring». [Se kunder](/admin/customers?query=&accepts_marketing=1)",
+        "nl": "Het e-mailadres van klanten die zich aanmelden wordt toegevoegd aan de lijst Accepteert marketing. [Bekijk klanten](/admin/customers?query=&accepts_marketing=1)",
+        "pl": "Adresy e-mail klientów, którzy dokonają subskrypcji, zostaną dodane do listy „wyrażających zgodę na marketing”. [Wyświetl klientów](/admin/customers?query=&accepts_marketing=1)",
+        "pt-BR": "O endereço de e-mail dos clientes que se inscreverem será adicionado à lista \"aceita marketing\". [Visualizar clientes](/admin/customers?query=&accepts_marketing=1)",
+        "pt-PT": "O endereço de e-mail dos clientes que subscreverem será adicionado à lista de \"aceitam marketing\". [Ver clientes](/admin/customers?query=&accepts_marketing=1)",
+        "sv": "Kunder som prenumererar kommer att få sin e-postadress tillagd i listan \"accepterar marknadsföring\". [Visa kunder](/admin/customers?query=&accepts_marketing=1)",
+        "th": "อีเมลของลูกค้าที่สมัครรับข้อมูลจะถูกเพิ่มในรายการ \"ยอมรับการส่งเสริมการตลาด\" [ดูลูกค้า](/admin/customers?query=&accepts_marketing=1)",
+        "tr": "Abone olan müşterilerin e-posta adresi \"pazarlama iletişimini kabul ediyor\" listesine eklenir. [Müşterileri görüntüleyin](/admin/customers?query=&accepts_marketing=1)",
+        "vi": "Địa chỉ email của khách hàng đăng ký sẽ được thêm vào danh sách \"chấp nhận tiếp thị\". [Xem khách hàng](/admin/customers?query=&accepts_marketing=1)",
+        "zh-CN": "进行了订阅的客户的电子邮件地址将添加到“接受营销”列表中。[查看客户](/admin/customers?query=&accepts_marketing=1)",
+        "zh-TW": "顧客訂閱後，電子郵件地址便會被加進「接受行銷」清單。[查看顧客](/admin/customers?query=&accepts_marketing=1)"
       }
     }
   ],

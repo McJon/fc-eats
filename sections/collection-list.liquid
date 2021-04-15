@@ -1,40 +1,90 @@
-<div data-section-id="{{ section.id }}" data-section-type="collection-list-section">
+<div class="collection-list collection-list--{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="collection-list">
 
-  {% if section.settings.title != blank %}
-  <div class="section-header section-header--small">
-    <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
-  </div>
-  {% endif %}
-
-  <div class="grid-uniform">
-    {% case section.blocks.size %}
-      {% when 1 %}
-        {%- assign collection_item_width = 'one-half' -%}
-        {%- assign collection_width = 625 -%}
-      {% when 2 %}
-        {%- assign collection_item_width = 'one-half' -%}
-        {%- assign collection_width = 625 -%}
-      {% when 3 %}
-        {%- assign collection_item_width = 'medium-down--one-half one-third' -%}
-        {%- assign collection_width = 410 -%}
-      {% when 4 %}
-        {%- assign collection_item_width = 'medium-down--one-half one-quarter' -%}
-        {%- assign collection_width = 330 -%}
-      {% when 5 %}
-        {%- assign collection_item_width = 'small--one-half medium--one-third post-large--one-fifth' -%}
-        {%- assign collection_width = 235 -%}
-    {% endcase %}
-
-    {% for block in section.blocks limit: section.blocks.size %}
-      {% assign featured = block.settings.collection %}
-      <div class="grid__item {{collection_item_width}} text-center" {{ block.shopify_attributes }}>
-        {% include 'collection-grid-item' with collection_width: collection_width %}
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <div class="featured-collection__heading grid text-center">
+        <div class="grid__item medium-up--ten-twelfths medium-up--push-one-twelfth">
+          <h2>{{ section.settings.title | escape }}</h2>
+        </div>
       </div>
-    {% endfor %}
+    {% endif %}
+
+    <div class="grid grid--uniform">
+
+      {% for block in section.blocks limit: section.blocks.size %}
+
+        {% case section.settings.grid %}
+          {% when 1 %}
+            {%- assign grid_item_width = 'one-whole' -%}
+          {% when 2 %}
+            {%- assign grid_item_width = 'small--one-half medium-up--one-half' -%}
+          {% when 3 %}
+            {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+          {% when 4 %}
+            {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+          {% else %}
+            {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+        {% endcase %}
+
+        {%- assign collection = collections[block.settings.collection] -%}
+
+        {% if collection == empty %}
+          {% comment %}add default state for collection block in storefront editor{% endcomment %}
+          {% capture collection_title %}{{ 'homepage.onboarding.collection_title' | t }}{% endcapture %}
+        {% else %}
+          {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+        {% endif %}
+
+        {% if collection.image %}
+          {% assign no_collection_image = false %}
+          {%- assign collection_image = collection.image -%}
+        {% elsif collection.products.first and collection.products.first.media != empty %}
+          {%- assign collection_image = collection.products.first.featured_media.preview_image -%}
+        {% else %}
+          {%- assign collection_image = blank -%}
+        {% endif %}
+
+        <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }}>
+          <div class="collection-list-grid__image-item">
+            <div class="collection-list-grid__image-container">
+              <a href="{{ collection.url }}" class="collection-list-grid__link">
+                <div class="collection-list-grid__image-wrapper">
+                  {% unless collection_image == blank %}
+                    <noscript>
+                      <div class="collection-grid-item__image" style="background-image: url({{ collection_image | img_url: '1024x1024' }})"></div>
+                    </noscript>
+                    <div class="collection-grid-item__image lazyload"
+                      data-bgset="{% include 'bgset', image: collection_image %}"
+                      data-sizes="auto"
+                      data-parent-fit="cover"
+                      style="background-image: url('{{ collection_image | img_url: '300x300' }});">
+                    </div>
+                  {% else %}
+                    {% if collection == empty %}
+                      <div class="collection-grid-item__image">
+                        {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+                        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {% else %}
+                      <div class="collection-grid-item__image" style="background-image: url({{ collection_image | img_url: '1024x1024' }})"></div>
+                    {% endif %}
+                  {% endunless %}
+                </div>
+              </a>
+            </div>
+            <div class="collection-grid-item__title">
+              <h3 class="h2 text-title text-center">{{ collection_title }}</h3>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+
+    </div>
+
   </div>
+
 </div>
-
-
 
 {% schema %}
 {
@@ -45,7 +95,7 @@
     "en": "Collection list",
     "es": "Lista de colecciones",
     "fi": "Kokoelmaluettelo",
-    "fr": "Liste des collections",
+    "fr": "Page des collections",
     "it": "Elenco delle collezioni",
     "ja": "コレクションリスト",
     "ko": "컬렉션 목록",
@@ -53,8 +103,8 @@
     "nl": "Collectielijst",
     "pl": "Lista kolekcji",
     "pt-BR": "Lista de coleções",
-    "pt-PT": "Lista de coleções",
-    "sv": "Kollektionslista",
+    "pt-PT": "Lista de coleção",
+    "sv": "Produktserielista",
     "th": "รายการคอลเลกชัน",
     "tr": "Koleksiyon listesi",
     "vi": "Danh sách bộ sưu tập",
@@ -62,7 +112,7 @@
     "zh-TW": "商品系列清單"
   },
   "class": "index-section",
-  "max_blocks": 5,
+  "max_blocks": 12,
   "settings": [
     {
       "type": "text",
@@ -105,14 +155,45 @@
         "nl": "Collectielijst",
         "pl": "Lista kolekcji",
         "pt-BR": "Lista de coleções",
-        "pt-PT": "Lista de coleções",
-        "sv": "Kollektionslista",
+        "pt-PT": "Lista de coleção",
+        "sv": "Produktserielista",
         "th": "รายการคอลเลกชัน",
         "tr": "Koleksiyon listesi",
         "vi": "Danh sách bộ sưu tập",
         "zh-CN": "产品系列列表",
         "zh-TW": "商品系列清單"
       }
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": {
+        "cs": "Počet kolekcí na řádek",
+        "da": "Kollektioner pr. række",
+        "de": "Kategorien per Reihe",
+        "en": "Collections per row",
+        "es": "Colecciones por fila",
+        "fi": "Kokoelmia per rivi",
+        "fr": "Collections par rangée",
+        "it": "Collezioni per riga",
+        "ja": "行あたりのコレクション数",
+        "ko": "열 별 컬렉션",
+        "nb": "Samlinger per rad",
+        "nl": "Collecties per rij",
+        "pl": "Liczba kolekcji na wiersz",
+        "pt-BR": "Coleções por linha",
+        "pt-PT": "Coleções por linha",
+        "sv": "Produktserier per rad",
+        "th": "คอลเลกชันต่อแถว",
+        "tr": "Satır başına koleksiyon",
+        "vi": "Số bộ sưu tập trên mỗi hàng",
+        "zh-CN": "每行产品系列数",
+        "zh-TW": "每列商品系列數"
+      },
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
     }
   ],
   "blocks": [
@@ -189,8 +270,8 @@
         "nl": "Collectielijst",
         "pl": "Lista kolekcji",
         "pt-BR": "Lista de coleções",
-        "pt-PT": "Lista de coleções",
-        "sv": "Kollektionslista",
+        "pt-PT": "Lista de coleção",
+        "sv": "Produktserielista",
         "th": "รายการคอลเลกชัน",
         "tr": "Koleksiyon listesi",
         "vi": "Danh sách bộ sưu tập",
@@ -221,9 +302,6 @@
         "zh-TW": "商品系列"
       },
       "blocks": [
-        {
-          "type": "collection"
-        },
         {
           "type": "collection"
         },
