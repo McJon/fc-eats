@@ -1,66 +1,38 @@
-{% assign display_map = false %}
-{%- if section.settings.api_key != blank and section.settings.map_address -%}
-  {% assign display_map = true %}
-{%- endif -%}
-
 <style>
-  {% unless section.settings.image == blank %}
-    .map-section__image--{{ section.id }} {
-      background-position: {{ section.settings.position }};
-    }
-    @media screen and (max-width: 749px) {
-      .map-section__image--{{ section.id }} {
-        padding-top: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100}}%;
-      }
-    }
-  {% endunless %}
+  #MapSection--{{ section.id }} {
+    background-position: {{ section.settings.background_image_position }};
+    background-size: cover;
+  }
+
+  #MapSection--{{ section.id }} .map-section__overlay {
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
 </style>
 
-<div class="map-section{% if display_map %} map-section--display-map{% endif %}" data-section-id="{{ section.id }}" data-section-type="map-section" data-api-key="{{ section.settings.api_key }}">
-  <div class="map-section__wrapper">
-    <div class="map-section__content map-section__text text-center">
-      {% if section.settings.heading != blank %}
-        <h2>{{ section.settings.heading | escape }}</h2>
-      {% endif %}
-      {% if section.settings.address != blank %}
-        <p>{{ section.settings.address }}</p>
-      {% endif %}
-      {% if section.settings.button != blank and section.settings.map_address != blank %}
-        <p><a href="https://maps.google.com?daddr={{ section.settings.map_address | escape }}" target="_blank" class="btn">
-          {% if section.settings.show_pin %}
-            <span class="icon icon-pin" aria-hidden="true"></span>
+<div id="MapSection--{{ section.id }}" class="map-section lazyload" data-section-id="{{ section.id }}" data-section-type="map" data-bgset="{% include 'bgset', image: section.settings.background_image %}">
+  {% if section.settings.title != blank or section.settings.address != blank %}
+    <div class="page-width">
+      <div class="map-section__content-wrapper">
+        <div class="map-section__content">
+          {% if section.settings.map_title != blank %}
+            <h3 class="h4">{{ section.settings.map_title | escape }}</h3>
           {% endif %}
-          {{ section.settings.button | escape }}
-        </a></p>
-      {% endif %}
+          {% if section.settings.address != blank %}
+            <div class="map-section__address rte-setting">{{ section.settings.address }}</div>
+            {% if section.settings.button_text != blank %}
+              <a href="https://maps.google.com?daddr={{ section.settings.map_address }}" class="btn-link map-section__button" target="_blank">{{ section.settings.button_text }}</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
     </div>
-
-    <div class="map-section__content map-section__background-wrapper">
-      {% if section.settings.image %}
-        <div class="map-section__image map-section__image--{{ section.id }} supports-js lazyload"
-            data-bgset="{% include 'bgset', image: section.settings.image %}"
-            data-sizes="auto"
-            data-parent-fit="cover">
-        </div>
-        <noscript>
-          <div class="map-section__image  map-section__image--{{ section.id }}" style="background-image: url({{ section.settings.image | img_url: '400x400'}});"></div>
-        </noscript>
-      {% else %}
-        <div class="map-section__placeholder">
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
-        </div>
-      {% endif %}
-      {% if display_map %}
-        <div class="map-section__container"
-             id="Map-{{ section.id }}"
-             data-address-setting="{{ section.settings.map_address | escape }}">
-        </div>
-      {% endif %}
-    </div>
-  </div>
+  {% endif %}
+  <a class="map-section__link" href="https://www.google.ca/maps/place/{{ section.settings.map_address }}" target="_blank" aria-label="{{ section.settings.map_address }}"></a>
+  <div class="map-section__container" id="Map-{{ section.id }}" data-address-setting="{{ section.settings.map_address }}" data-api-key="{{ section.settings.api_key }}"></div>
+  <div class="map-section__overlay"></div>
+  <div class="map-section__error-message"></div>
 </div>
-
-
 
 {% schema %}
 {
@@ -87,11 +59,37 @@
     "zh-CN": "地图",
     "zh-TW": "地圖"
   },
-  "class": "index-section",
+  "class": "index-section index-section--map",
   "settings": [
     {
+      "type": "header",
+      "content": {
+        "cs": "Text",
+        "da": "Tekst",
+        "de": "Text",
+        "en": "Text",
+        "es": "Texto",
+        "fi": "Teksti",
+        "fr": "Texte",
+        "it": "Testo",
+        "ja": "テキスト",
+        "ko": "텍스트",
+        "nb": "Tekst",
+        "nl": "Tekst",
+        "pl": "Tekst",
+        "pt-BR": "Texto",
+        "pt-PT": "Texto",
+        "sv": "Text",
+        "th": "ข้อความ",
+        "tr": "Metin",
+        "vi": "Văn bản",
+        "zh-CN": "文本",
+        "zh-TW": "文字"
+      }
+    },
+    {
+      "id": "map_title",
       "type": "text",
-      "id": "heading",
       "label": {
         "cs": "Nadpis",
         "da": "Overskrift",
@@ -99,7 +97,7 @@
         "en": "Heading",
         "es": "Título",
         "fi": "Otsake",
-        "fr": "Titre",
+        "fr": "En-tête",
         "it": "Heading",
         "ja": "見出し",
         "ko": "제목",
@@ -140,8 +138,8 @@
       }
     },
     {
-      "type": "richtext",
       "id": "address",
+      "type": "richtext",
       "label": {
         "cs": "Adresa a provozní doba",
         "da": "Adresse og åbningstider",
@@ -161,7 +159,7 @@
         "sv": "Adress och öppettider",
         "th": "ที่อยู่และเวลาทำการ",
         "tr": "Adres ve çalışma saatleri",
-        "vi": "Địa chỉ và thời gian",
+        "vi": "Địa chỉ và thời gian làm việc",
         "zh-CN": "地址和时间",
         "zh-TW": "地址和營業時間"
       },
@@ -170,7 +168,7 @@
         "da": "<p>123 Fake St.<br>Toronto, Canada</p><p>mandag-fredag, 10.00- 21.00<br>lørdag 11.00-21.00&lt;br&gt;søndag 11.00-17.00</p>",
         "de": "<p>Musterstraße 123<br>12345 Musterstadt</p><p>Mo - Fr, 10 - 21 Uhr<br>Samstag, 11 - 21 Uhr<br>Sonntag, Ruhetag</p>",
         "en": "<p>123 Fake St.<br>Toronto, Canada</p><p>Mon - Fri, 10am - 9pm<br>Saturday, 11am - 9pm<br>Sunday, 11am - 5pm</p>",
-        "es": "<p>123 Fake St. <br> Toronto, Canadá</p><p>Lun - Vie, 10 a.m. - 9 p.m. <br> Sábados, de 11 am a 09 pm <br> Domingos, de 11 am a 05 pm</p>",
+        "es": "<p>123 Fake St. <br> Toronto, Canadá</p><p>Mon - Vie, 10 a.m. - 9 p.m. <br> Sábados, de 11:00am a 09:00pm <br> Domingo, de 11:00am a 05:00pm</p>",
         "fi": "<p>Esimerkkikatu 5<br>Helsinki, Suomi</p><p>Maanantai–perjantai klo 10–21<br>Lauantai klo 11–21<br>Sunnuntai klo 11–17</p>",
         "fr": "<p>123 rue inventée<br>Paris, France</p><p>Lun. - ven., 10 h - 21 h<br>Samedi, 11 h - 21 h<br>Dimanche, 11 h - 17 h</p>",
         "it": "<p>123 Fake St.<br>Toronto, Canada</p><p>Lun-Ven, 10:00 - 21:00<br>Sabato, 11:00 - 21:00<br>Domenica, 11:00 - 17:00</p>",
@@ -179,12 +177,12 @@
         "nb": "<p>Eksempelgaten 123<br>Oslo, Norge</p><p>Man – Fre, 10 – 21<br>Lørdag, 11 – 21<br>Søndag, 11–17</p>",
         "nl": "<p>Dorpsweg 1<br>Arnhem, Nederland</p><p>ma - vr, 10:00 - 21:00<br>zaterdag, 11:00 - 21:00<br>zondag, 11:00 - 17:00</p>",
         "pl": "<p>ul. Przykładowa 123<br>Warszawa, Polska</p><p>Pon - Pt 10:00 - 21:00<br>Sobota 11:00 - 21:00<br>Niedziela 11:00 - 17:00</p>",
-        "pt-BR": "<p>123 Rua Inventada<br> São Paulo, Brasil</p><p>Seg. - Sex., 10h às 21h <br> Sábado, 11h às 21h <br> Domingo, 11h às 17h</p>",
+        "pt-BR": "<p>123 Fake St. <br> Toronto, Canadá</p><p>Seg. - Sex., 10h - 21h <br> Sábado, 11h às 21h <br> Domingo, 11h às 17h</p>",
         "pt-PT": "<p>Rua Imaginária, 123<br>Lisboa, Portugal</p><p>Seg. - Sex., 10h - 21h<br> Sábado, 11h - 21h<br>Domingo, 11h - 17h</p>",
         "sv": "<p>Exempelgatan 123<br>Stockholm, Sverige</p><p>Mån - Fre, 10.00 - 21.00<br>Lördag, 11.00 - 21.00<br>Söndag, 11.00 - 17.00</p>",
         "th": "<p>123 Fake St.<br>Toronto, Canada</p><p>จ. - ศ. 10:00 น. - 21:00 น.<br>วันเสาร์ 11:00 น. - 21:00 น.<br>วันอาทิตย์ 11:00 น. - 17:00 น.</p>",
         "tr": "<p>123 Fake St.<br>Toronto, Kanada</p><p>Pzt - Cum, 10:00-21:00<br>Cumartesi, 11:00-21:00<br>Pazar, 11:00-17:00</p>",
-        "vi": "<p>123 Fake St.<br>Toronto, Canada</p><p>Thứ Hai - Thứ Sáu, 10SA - 9CH<br>Thứ Bảy, 11SA - 9CH<br>Chủ nhật, 11SA - 5CH</p>",
+        "vi": "<p>123 Fake St.<br>Toronto, Canada</p><p>Thứ Hai - Thứ Sáu, 10 SA - 9 CH<br>Thứ Bảy, 11 SA - 9 CH<br>Chủ nhật, 11 SA - 5 CH</p>",
         "zh-CN": "<p>123 Fake St.<br>Toronto, Canada</p><p>周一至周五上午 10 点至晚上 9 点<br>周六上午 11 点至晚上 9 点<br>周日上午 11 点至下午 5 点</p>",
         "zh-TW": "<p>加拿大多倫多<br>假設範例街 123 號</p><p>星期一 - 星期五，上午 10 點 - 下午 9 點<br>星期六，上午 11 點 - 下午 9 點<br>星期日，上午 11 點 - 下午 5 點</p>"
       }
@@ -197,9 +195,9 @@
         "da": "Kortadresse",
         "de": "Adresse",
         "en": "Map address",
-        "es": "Dirección en el mapa",
+        "es": "Dirección del mapa",
         "fi": "Määritä osoite",
-        "fr": "Adresse sur la carte",
+        "fr": "Adresse de la carte",
         "it": "Indirizzo su mappa",
         "ja": "マップアドレス",
         "ko": "지도 주소",
@@ -235,7 +233,7 @@
         "th": "Google Maps จะค้นหาตำแหน่งที่ตั้งที่แน่นอน",
         "tr": "Google Haritalar tam konumu bulur",
         "vi": "Google Maps sẽ tìm vị trí chính xác",
-        "zh-CN": "Google 地图会显示确切位置",
+        "zh-CN": "Google 地图会显示确切地点",
         "zh-TW": "Google 地圖會找出確切位置"
       },
       "default": {
@@ -252,7 +250,7 @@
         "nb": "Eksempelgaten 123, Oslo",
         "nl": "Dorpsweg 1, Arnhem",
         "pl": "80 Spadina Ave, Toronto",
-        "pt-BR": "Av. Paulista, 1234, São Paulo",
+        "pt-BR": "80 Spadina Ave, Toronto",
         "pt-PT": "80 Spadina Ave, Toronto",
         "sv": "Sveavägen 180, Stockholm",
         "th": "80 Spadina Ave, Toronto",
@@ -263,8 +261,8 @@
       }
     },
     {
+      "id": "button_text",
       "type": "text",
-      "id": "button",
       "label": {
         "cs": "Text odkazu na mapu",
         "da": "Maplinklabel",
@@ -289,56 +287,28 @@
         "zh-TW": "地圖連結標籤"
       },
       "default": {
-        "cs": "Trasa",
-        "da": "Find vej",
-        "de": "Wegbeschreibung",
-        "en": "Directions",
-        "es": "Instrucciones",
-        "fi": "Ohjeet",
-        "fr": "Itinéraire",
-        "it": "Direzioni",
-        "ja": "道順",
-        "ko": "지시",
-        "nb": "Veibeskrivelse",
-        "nl": "Richting",
-        "pl": "Wskazówki",
-        "pt-BR": "Direções",
-        "pt-PT": "Direções",
-        "sv": "Vägbeskrivning",
-        "th": "คำสั่ง",
-        "tr": "Yol tarifi",
-        "vi": "Hướng",
-        "zh-CN": "指示",
-        "zh-TW": "方向"
+        "cs": "Zjistit trasu",
+        "da": "Få vejledninger",
+        "de": "Wegbeschreibung bekommen",
+        "en": "Get directions",
+        "es": "Obtener indicaciones",
+        "fi": "Hae ohjeet",
+        "fr": "Obtenir un itinéraire",
+        "it": "Richiedi direzioni",
+        "ja": "道順を知る",
+        "ko": "길 찾기",
+        "nb": "Få beskrivelse",
+        "nl": "Krijg aanwijzingen",
+        "pl": "Uzyskaj wskazówki",
+        "pt-BR": "Obter direções",
+        "pt-PT": "Obter direções",
+        "sv": "Få hjälp",
+        "th": "ถามเส้นทาง",
+        "tr": "Yol tarifi al",
+        "vi": "Nhận chỉ dẫn",
+        "zh-CN": "获取指示",
+        "zh-TW": "取得路線"
       }
-    },
-    {
-      "id": "show_pin",
-      "type": "checkbox",
-      "label": {
-        "cs": "Zobrazit špendlík",
-        "da": "Vis pin",
-        "de": "Pin anzeigen",
-        "en": "Show pin",
-        "es": "Ver pin",
-        "fi": "Näytä nasta",
-        "fr": "Afficher l'épingle",
-        "it": "Mostra pin",
-        "ja": "ピンを表示する",
-        "ko": "핀 표시",
-        "nb": "Vis pinne",
-        "nl": "Pin tonen",
-        "pl": "Pokaż pin",
-        "pt-BR": "Exibir alfinete",
-        "pt-PT": "Mostrar PIN",
-        "sv": "Visa pin",
-        "th": "แสดงพิน",
-        "tr": "Pini göster",
-        "vi": "Hiển thị ghim",
-        "zh-CN": "显示针",
-        "zh-TW": "顯示 PIN 碼"
-      },
-      "default": true
     },
     {
       "type": "header",
@@ -397,7 +367,7 @@
         "da": "Du skal [registrere en Google Maps API-nøgle](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) for at vise kortet",
         "de": "Du musst [einen Google Maps-API-Schlüssel registrieren](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key), um die Karte anzuzeigen",
         "en": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map",
-        "es": "Deberás [registrar una clave API de Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) para mostrar el plano",
+        "es": "Deberás [registrar una clave API de Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) para mostrar el mapa",
         "fi": "Sinun on [rekisteröitävä Google Maps -sovellusliittymän avain](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) näyttääksesi kartan",
         "fr": "Vous devrez [enregistrer une clé API Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) pour afficher la carte",
         "it": "È necessario [registrare una chiave API di Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) per visualizzare la mappa",
@@ -406,19 +376,19 @@
         "nb": "Du må [registrere en Google Maps API-nøkkel](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) for å vise kartet",
         "nl": "Je moet [een Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) registreren om de kaart weer te geven",
         "pl": "Aby wyświetlić mapę, musisz [zarejestrować klucz Google Maps API](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key)",
-        "pt-BR": "Para exibir o mapa, é preciso [cadastrar uma chave da API Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key)",
+        "pt-BR": "Para exibir o mapa, é preciso [cadastrar uma chave de API Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key)",
         "pt-PT": "Deve [registar uma Chave de API do Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) para apresentar o mapa",
         "sv": "Du måste [registrera en Google Maps API-nyckel](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) för att visa kartan",
-        "th": "คุณจะต้อง [ลงทะเบียนสร้างคีย์ Google Maps API ](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) เพื่อแสดงแผนที่",
+        "th": "คุณจะต้อง [ลงทะเบียนสร้างคีย์ Google Maps API](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) เพื่อแสดงแผนที่",
         "tr": "Haritayı görüntülemek için [bir Google Haritalar API anahtarı kaydetmeniz](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) gerekir",
         "vi": "Bạn sẽ cần [đăng ký Khóa API của Google Maps](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) để hiển thị bản đồ",
-        "zh-CN": "您需要 [注册 Google Maps API 密钥](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) 才能显示地图",
+        "zh-CN": "您需要 [注册 Google 地图 API 密钥](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) 才能显示地图",
         "zh-TW": "您必須 [註冊 Google Maps API 金鑰](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) 才能顯示地圖"
       }
     },
     {
       "type": "image_picker",
-      "id": "image",
+      "id": "background_image",
       "label": {
         "cs": "Obrázek",
         "da": "Billede",
@@ -468,7 +438,7 @@
     },
     {
       "type": "select",
-      "id": "position",
+      "id": "background_image_position",
       "label": {
         "cs": "Pozice obrázku",
         "da": "Placering af billede",
@@ -508,7 +478,7 @@
             "ko": "왼쪽 상단",
             "nb": "Øverst til venstre",
             "nl": "Linksboven",
-            "pl": "Na górze z lewej",
+            "pl": "Na górze po lewej",
             "pt-BR": "Superior esquerdo",
             "pt-PT": "Canto superior esquerdo",
             "sv": "Överst till vänster",
@@ -560,7 +530,7 @@
             "ko": "오른쪽 상단",
             "nb": "Øverst til høyre",
             "nl": "Rechtsboven",
-            "pl": "Na górze z prawej",
+            "pl": "Na górze po prawej",
             "pt-BR": "Superior direito",
             "pt-PT": "Canto superior direito",
             "sv": "Överst till höger",
@@ -581,11 +551,11 @@
             "es": "Al medio a la izquierda",
             "fi": "Keskellä vasemmalla",
             "fr": "Au milieu à gauche",
-            "it": "Nel mezzo a sinistra",
+            "it": "In mezzo a sinistra",
             "ja": "中央部左側",
             "ko": "왼쪽 중간",
             "nb": "Midt til venstre",
-            "nl": "Midden links",
+            "nl": "Links midden",
             "pl": "Na środku po lewej",
             "pt-BR": "Meio esquerdo",
             "pt-PT": "Intermédio à esquerda",
@@ -607,11 +577,11 @@
             "es": "Centrada en el medio",
             "fi": "Keskellä keskellä",
             "fr": "Centrée au milieu",
-            "it": "In mezzo",
+            "it": "In mezzo al centro",
             "ja": "中心",
             "ko": "가운데 중간",
             "nb": "Midt i senter",
-            "nl": "Midden centrum",
+            "nl": "Centraal midden",
             "pl": "Na środku",
             "pt-BR": "Meio centro",
             "pt-PT": "Intermédio ao centro",
@@ -633,11 +603,11 @@
             "es": "Centrado a la derecha",
             "fi": "Keskellä oikealla",
             "fr": "Au milieu à droite",
-            "it": "Nel mezzo a destra",
+            "it": "In centro a destra",
             "ja": "中央部右側",
             "ko": "오른쪽 중간",
             "nb": "Midt til høyre",
-            "nl": "Midden rechts",
+            "nl": "Rechts midden",
             "pl": "Na środku po prawej",
             "pt-BR": "Meio direito",
             "pt-PT": "Intermédio à direita",
@@ -689,7 +659,7 @@
             "ja": "中央下",
             "ko": "맨아래 중간",
             "nb": "Bunnsentrert",
-            "nl": "Midden onder",
+            "nl": "Middenonder",
             "pl": "Na dole na środku",
             "pt-BR": "Inferior centro",
             "pt-PT": "Inferior centro",
@@ -729,6 +699,88 @@
           "value": "bottom right"
         }
       ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": {
+        "cs": "Pozadí",
+        "da": "Baggrund",
+        "de": "Hintergrund",
+        "en": "Background",
+        "es": "Fondo",
+        "fi": "Tausta",
+        "fr": "Arrière-plan",
+        "it": "Sfondo",
+        "ja": "背景",
+        "ko": "배경",
+        "nb": "Bakgrunn",
+        "nl": "Achtergrond",
+        "pl": "Tło",
+        "pt-BR": "Plano de fundo",
+        "pt-PT": "Fundo",
+        "sv": "Bakgrund",
+        "th": "พื้นหลัง",
+        "tr": "Arka plan",
+        "vi": "Nền",
+        "zh-CN": "背景",
+        "zh-TW": "背景"
+      },
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": {
+        "cs": "%",
+        "da": "%",
+        "de": "%",
+        "en": "%",
+        "es": "%",
+        "fi": "%",
+        "fr": "%",
+        "it": "%",
+        "ja": "%",
+        "ko": "%",
+        "nb": "%",
+        "nl": "%",
+        "pl": "%",
+        "pt-BR": "%",
+        "pt-PT": "%",
+        "sv": "%",
+        "th": "%",
+        "tr": "%",
+        "vi": "%",
+        "zh-CN": "%",
+        "zh-TW": "%"
+      },
+      "label": {
+        "cs": "Neprůhlednost",
+        "da": "Uigennemsigtighed",
+        "de": "Opazität",
+        "en": "Opacity",
+        "es": "Opacidad",
+        "fi": "Sameus",
+        "fr": "Opacité",
+        "it": "Opacità",
+        "ja": "不透過率",
+        "ko": "불투명도",
+        "nb": "Gjennomsiktighet",
+        "nl": "Doorschijnendheid",
+        "pl": "Nieprzezroczystość",
+        "pt-BR": "Opacidade",
+        "pt-PT": "Opacidade",
+        "sv": "Opacitet",
+        "th": "ความทึบ",
+        "tr": "Opaklık",
+        "vi": "Độ chắn sáng",
+        "zh-CN": "不透明度",
+        "zh-TW": "透明度"
+      },
+      "default": 30
     }
   ],
   "presets": [
@@ -760,21 +812,21 @@
         "cs": "Informace o obchodu",
         "da": "Butiksoplysninger",
         "de": "Laden-Info",
-        "en": "Store Information",
+        "en": "Store information",
         "es": "Información sobre tu tienda",
         "fi": "Kaupan tiedot",
-        "fr": "Informations sur la boutique",
+        "fr": "Renseignements sur votre boutique",
         "it": "Informazioni del negozio",
         "ja": "ストア情報",
         "ko": "스토어 정보",
         "nb": "Butikkinformasjon",
         "nl": "Winkelinformatie",
         "pl": "Informacje o sklepie",
-        "pt-BR": "Informações da loja",
+        "pt-BR": "Informações sobre a loja",
         "pt-PT": "Informações da loja",
         "sv": "Butiksinformation",
         "th": "ข้อมูลร้านค้า",
-        "tr": "Mağaza Bilgileri",
+        "tr": "Mağaza bilgileri",
         "vi": "Thông tin cửa hàng",
         "zh-CN": "商店信息",
         "zh-TW": "商店資訊"

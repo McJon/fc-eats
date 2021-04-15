@@ -1,250 +1,240 @@
-{% assign number_of_comments = article.comments_count %}
+<div class="article" data-section-id="{{ section.id }}" data-section-type="article-template">
 
-{% if comment and comment.created_at %}
-  {% assign number_of_comments = article.comments_count | plus: 1 %}
-{% endif %}
+  {% if article.image %}
+    <div class="section-header-image-wrapper">
+      <div class="section-header-image{% if section.settings.image_parallax %} section-header-image--parallax{% endif %} lazyload" data-bgset="{% include 'bgset', image: article.image %}"></div>
 
-{% paginate article.comments by 5 %}
+      <noscript>
+        <div class="section-header-image" style="background-image: {{ article.image | img_url: 'master' }}"></div>
+      </noscript>
+    </div>
+  {% endif %}
 
-{% comment %}{% include 'breadcrumb' %}{% endcomment %}
-
-<div class="grid" data-section-id="{{ section.id }}" data-section-type="article-template">
-
-  <article class="grid__item post-large--four-fifths" itemscope itemtype="http://schema.org/Article">
-
-    <div class="grid">
-      <div class="grid__item post-large--ten-twelfths">
-
-        <header class="section-header">
-          <h1 class="section-header__title">{{ article.title }}</h1>
+  <div class="page-width">
+    <div class="article__wrapper grid">
+      <div class="article__content article__content--large grid__item medium-up--ten-twelfths medium-up--push-one-twelfth">
+        <header class="article__header separator" data-animate>
+          {% if section.settings.show_date %}
+            <span class="article__date text-small--uppercase">
+              {{ article.published_at | time_tag: format: 'date' }}
+            </span>
+          {% endif %}
+          {% if section.settings.show_author %}
+            <span class="article__author text-small--uppercase">
+              {{ article.author }}
+            </span>
+          {% endif %}
+          <h1 class="article__title h2">{{ article.title }}</h1>
         </header>
 
-        <p>
-          <time datetime="{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}">{{ article.published_at | date: format: 'date' }}</time>
-          {% if section.settings.article_author_enable %}
-            <span class="meta-sep">&#8226;</span>
-            {{ article.author }}
-          {% endif %}
-          {% if article.tags.size > 0 %}
-            <span class="meta-sep">&#8226;</span>
-            {% for tag in article.tags %}
-              <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} <span class="meta-sep">&#8226;</span> {% endunless %}
-            {% endfor %}
-          {% endif %}
-        </p>
-
-        <div class="rte" itemprop="articleBody">
+        <div class="article__body rte" itemprop="articleBody">
           {{ article.content }}
         </div>
-
-        {% if section.settings.social_sharing %}
-          <hr class="hr--clear hr--small">
-          {% include 'social-sharing' %}
-        {% endif %}
-
-        {% comment %}
-          Create links to the next and previous articles, if available.
-        {% endcomment %}
-        {% if blog.next_article or blog.previous_article %}
-          <hr class="hr--clear hr--small">
-          <p class="clearfix">
-            {% if blog.previous_article %}
-              <span class="left">
-                &larr; {{ 'blogs.article.older_post' | t | link_to: blog.previous_article }}
-              </span>
-            {% endif %}
-            {% if blog.next_article %}
-              <span class="right">
-                {{ 'blogs.article.newer_post' | t | link_to: blog.next_article }} &rarr;
-              </span>
-            {% endif %}
-          </p>
-        {% endif %}
-
-        {% if blog.comments_enabled? %}
-          <hr class="hr--clear hr--small">
-
-          {% comment %}
-            Just like blog.liquid page, define how many comments should be on each page.
-          {% endcomment %}
-
-            {% comment %}
-              #comments is required, it is used as an anchor link by Shopify.
-            {% endcomment %}
-            <div id="comments">
-
-              {% if comment and comment.created_at %}
-                <p class="note form-success">
-                  {% if blog.moderated? %}
-                    {{ 'blogs.comments.success_moderated' | t }}
-                  {% else %}
-                    {{ 'blogs.comments.success' | t }}
-                  {% endif %}
-                </p>
-              {% endif %}
-
-              {% if number_of_comments > 0 %}
-                <ul>
-                  {% comment %}
-                    If a comment was just submitted with no blank field, show it.
-                  {% endcomment %}
-                  {% if comment and comment.created_at %}
-                    <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
-                      {% include 'comment' %}
-                    </li>
-                  {% endif %}
-
-                  {% comment %}
-                    Showing the rest of the comments.
-                  {% endcomment %}
-                  {% for comment in article.comments %}
-                    <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
-                      {% include 'comment' %}
-                    </li>
-                  {% endfor %}
-                </ul>
-
-                {% if paginate.pages > 1 %}
-                  <hr class="--clear hr--small">
-                  <div class="text-center">
-                    {% include 'pagination-custom' %}
-                  </div>
-                {% endif %}
-
-                <hr class="hr--clear hr--small">
-
-              {% endif %}
-
-              {% comment %}
-                Comment submission form
-              {% endcomment %}
-              {% form 'new_comment', article %}
-
-                <h2 class="h4">{{ 'blogs.comments.title' | t }}</h2>
-
-                {{ form.errors | default_errors }}
-
-                <div class="grid">
-
-                  <div class="grid__item post-large--one-half">
-                    <label for="CommentAuthor" class="label--hidden">{{ 'blogs.comments.name' | t }}</label>
-                    <input {% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" placeholder="{{ 'blogs.comments.name' | t }}" id="CommentAuthor" value="{{ form.author }}" autocapitalize="words">
-
-                    <label for="CommentEmail" class="label--hidden">{{ 'blogs.comments.email' | t }}</label>
-                    <input {% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" placeholder="{{ 'blogs.comments.email' | t }}" id="CommentEmail" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
-                  </div>
-
-                  <div class="grid__item">
-                    <label for="CommentBody" class="label--hidden">{{ 'blogs.comments.message' | t }}</label>
-                    <textarea {% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="CommentBody" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
-                  </div>
-
-                </div>
-
-                {% if blog.moderated? %}
-                  <p><small>{{ 'blogs.comments.moderated' | t }}</small></p>
-                {% endif %}
-
-                <input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
-
-              {% endform %}
-
-            </div>
-
-        {% endif %}
-
       </div>
+
+      {% if section.settings.show_share_buttons %}
+        {% if settings.share_facebook or settings.share_twitter or settings.share_pinterest %}
+          <div class="article__share-desktop grid__item medium-up--two-twelfths">
+            <div class="article__share-desktop-wrapper">
+              {% include 'social-sharing', type: 'article', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
     </div>
-  </article>
+  </div>
 
-  <aside class="sidebar grid__item post-large--one-fifth">
-    {% include 'blog-sidebar' %}
-  </aside>
+  {% if section.settings.show_share_buttons %}
+    {% if settings.share_facebook or settings.share_twitter or settings.share_pinterest %}
+      <div class="article__share-mobile">
+          {% include 'social-sharing', type: 'mobile', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+      </div>
+    {% endif %}
+  {% endif %}
 </div>
-
-{% endpaginate %}
-
-
 
 {% schema %}
 {
   "name": {
-    "cs": "Článek",
-    "da": "Artikel",
-    "de": "Artikel",
-    "en": "Article",
-    "es": "Artículo",
-    "fi": "Artikkeli",
-    "fr": "Article",
-    "it": "Articolo",
-    "ja": "記事",
-    "ko": "문서",
-    "nb": "Artikkel",
-    "nl": "Artikel",
-    "pl": "Artykuł",
-    "pt-BR": "Artigo",
-    "pt-PT": "Artigo",
-    "sv": "Artikel",
-    "th": "บทความ",
-    "tr": "Makale",
+    "cs": "Příspěvky",
+    "da": "Opslag",
+    "de": "Posts",
+    "en": "Posts",
+    "es": "Publicaciones",
+    "fi": "Julkaisut",
+    "fr": "Articles",
+    "it": "Articoli",
+    "ja": "投稿",
+    "ko": "게시물",
+    "nb": "Innlegg",
+    "nl": "Berichten",
+    "pl": "Posty",
+    "pt-BR": "posts",
+    "pt-PT": "Publicações",
+    "sv": "Inlägg",
+    "th": "โพสต์",
+    "tr": "Gönderiler",
     "vi": "Bài viết",
     "zh-CN": "文章",
-    "zh-TW": "文章"
+    "zh-TW": "貼文"
   },
   "settings": [
     {
       "type": "checkbox",
-      "id": "article_author_enable",
+      "id": "image_parallax",
       "label": {
-        "cs": "Zobrazit autora příspěvku na blogu",
-        "da": "Vis forfatter af blogopslag",
-        "de": "Autor eines Blog-Beitrags anzeigen",
-        "en": "Show blog post author",
-        "es": "Mostrar autor de la entrada del blog",
-        "fi": "Näytä blogikirjoituksen tekijä",
-        "fr": "Afficher l'auteur de l'article de blog",
-        "it": "Mostra autore articolo del blog",
-        "ja": "ブログ記事の執筆者を表示する",
-        "ko": "블로그 게시물 작성자 표시",
-        "nb": "Vis forfatter av blogginnlegg",
-        "nl": "Toon auteur van blogpost",
-        "pl": "Pokaż autora posta na blogu",
-        "pt-BR": "Exibir autor do post do blog",
-        "pt-PT": "Mostrar autor(a) da publicação no blogue",
-        "sv": "Visa blogginläggets författare",
-        "th": "แสดงผู้เขียนโพสต์บล็อก",
-        "tr": "Blog gönderisinin yazarını göster",
-        "vi": "Hiển thị tác giả bài viết blog",
-        "zh-CN": "显示博客文章作者",
-        "zh-TW": "顯示部落格貼文作者"
+        "cs": "Zobrazit paralaxní animaci obrázku",
+        "da": "Vis parallakse animationer for billeder",
+        "de": "Parallax-Animation für Bild anzeigen",
+        "en": "Show image parallax animation",
+        "es": "Mostrar animación de paralaje de imagen",
+        "fi": "Näytä kuvaparallaksianimaatio",
+        "fr": "Afficher l'animation en parallaxe",
+        "it": "Mostra animazione parallasse immagine",
+        "ja": "画像のパララックスアニメーションを表示する",
+        "ko": "이미지 패럴랙스 애니메이션 표시",
+        "nb": "Vis parallakse animasjoner for bilder",
+        "nl": "Parallax-animatie voor afbeelding weergeven",
+        "pl": "Pokaż animację paralaksy obrazu",
+        "pt-BR": "Exibir animação de paralaxe na imagem",
+        "pt-PT": "Mostrar animação de paralaxe da imagem",
+        "sv": "Visa bildparallaxanimering",
+        "th": "แสดงการเคลื่อนไหวภาพพารัลแลกซ์",
+        "tr": "Görsel paralaks animasyonunu göster",
+        "vi": "Hiển thị hiệu ứng động parallax hình ảnh",
+        "zh-CN": "显示图片视差动画",
+        "zh-TW": "顯示圖片的視差捲動動畫"
+      },
+      "info": {
+        "cs": "Je možné zobrazit jen v počítačích.",
+        "da": "Vises kun på computere",
+        "de": "Wird nur auf dem Desktop angezeigt",
+        "en": "Only shows on desktop",
+        "es": "Solo se muestra en el escritorio",
+        "fi": "Näytetään vain työpöydällä",
+        "fr": "Ne s'affiche que sur le bureau",
+        "it": "Appare solo su desktop",
+        "ja": "デスクトップにのみ表示する",
+        "ko": "데스크톱에서만 표시",
+        "nb": "Viser bare på datamaskin",
+        "nl": "Wordt alleen op desktop weergegeven",
+        "pl": "Wyświetla się tylko na pulpicie",
+        "pt-BR": "Aparece apenas na área de trabalho",
+        "pt-PT": "Surge apenas na área de trabalho",
+        "sv": "Visas bara på skrivbordet",
+        "th": "แสดงบนเดสก์ท็อปเท่านั้น",
+        "tr": "Yalnızca masaüstünde görünür",
+        "vi": "Chỉ hiển thị trên máy tính",
+        "zh-CN": "仅在桌面上显示",
+        "zh-TW": "只顯示在桌面上"
       }
     },
     {
       "type": "checkbox",
-      "id": "social_sharing",
+      "id": "show_date",
       "label": {
-        "cs": "Povolit sdílení příspěvků na bogu",
-        "da": "Aktivér deling af blogopslag",
-        "de": "Freigabe von Blog-Beiträgen aktivieren",
-        "en": "Enable blog post sharing",
-        "es": "Habilitar la función compartir entrada en el blog",
-        "fi": "Ota blogipäivitysten jakaminen käyttöön",
-        "fr": "Activer le partage des articles de blog",
-        "it": "Abilita condivisione articoli del blog",
+        "cs": "Zobrazit datum",
+        "da": "Vis dato",
+        "de": "Datum anzeigen",
+        "en": "Show date",
+        "es": "Mostrar fecha",
+        "fi": "Näytä päivämäärä",
+        "fr": "Afficher la date",
+        "it": "Mostra data",
+        "ja": "日付を表示する",
+        "ko": "날짜 표시",
+        "nb": "Vis dato",
+        "nl": "Datum weergeven",
+        "pl": "Pokaż datę",
+        "pt-BR": "Exibir data",
+        "pt-PT": "Mostrar data",
+        "sv": "Visa datum",
+        "th": "แสดงวันที่",
+        "tr": "Tarihi göster",
+        "vi": "Hiển thị ngày",
+        "zh-CN": "显示日期",
+        "zh-TW": "顯示日期"
+      },
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": {
+        "cs": "Zobrazit autora",
+        "da": "Vis forfatter",
+        "de": "Autor anzeigen",
+        "en": "Show author",
+        "es": "Mostrar autor",
+        "fi": "Näytä tekijä",
+        "fr": "Afficher l'auteur",
+        "it": "Mostra autore",
+        "ja": "執筆者を表示する",
+        "ko": "작성자 표시",
+        "nb": "Vis forfatter",
+        "nl": "Auteur weergeven",
+        "pl": "Pokaż autora",
+        "pt-BR": "Exibir autor",
+        "pt-PT": "Mostrar autor",
+        "sv": "Visa författare",
+        "th": "แสดงผู้เขียน",
+        "tr": "Yazarı göster",
+        "vi": "Hiển thị tác giả",
+        "zh-CN": "显示作者",
+        "zh-TW": "顯示作者"
+      },
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "label": {
+        "cs": "Povolit sdílení pro blogové články",
+        "da": "Aktivér deling for blogartikler",
+        "de": "Teilen von Blog-Beiträgen aktivieren",
+        "en": "Enable sharing for blog articles",
+        "es": "Habilitar el uso compartido de artículos de blog",
+        "fi": "Ota blogi-artikkelien jakaminen käyttöön",
+        "fr": "Activer le partage pour les articles de blog",
+        "it": "Abilita condivisione per gli articoli del blog",
         "ja": "ブログ記事の共有を有効にする",
-        "ko": "블로그 게시물 공유 사용",
-        "nb": "Aktiver deling av blogginnlegg",
-        "nl": "Delen van blogpost inschakelen",
-        "pl": "Włącz udostępnianie posta na blogu",
-        "pt-BR": "Habilitar compartilhamento de post do blog",
-        "pt-PT": "Ativar partilha da publicação no blogue",
-        "sv": "Aktivera blogginläggsdelning",
-        "th": "เปิดใช้การแชร์โพสต์บล็อก",
-        "tr": "Blog gönderisi paylaşmayı etkinleştir",
-        "vi": "Bật chia sẻ bài viết blog",
+        "ko": "블로그 기사 공유 사용",
+        "nb": "Aktiver deling for bloggartikler",
+        "nl": "Delen van blogartikelen toestaan",
+        "pl": "Włącz udostępnianie artykułów na blogu",
+        "pt-BR": "Habilitar compartilhamento para artigos de blog",
+        "pt-PT": "Ativar partilha para artigos no blogue",
+        "sv": "Aktivera delning för bloggartiklar",
+        "th": "เปิดใช้การแชร์บทความบล็อก",
+        "tr": "Blog makaleleri için paylaşmayı etkinleştir",
+        "vi": "Bật chia sẻ bài viết trên blog",
         "zh-CN": "启用博客文章分享",
-        "zh-TW": "啟用部落格貼文分享"
-      }
+        "zh-TW": "啟用部落格文章分享功能"
+      },
+      "info": {
+        "cs": "Nezapomeňte povolit sdílení na sociálních sítích v obecném nastavení.",
+        "da": "Sørg for, at du har aktiveret deling på sociale medier under Generelle indstillinger",
+        "de": "Vergewissere dich, dass du in den allgemeinen Einstellungen das Teilen in sozialen Netzwerken aktiviert hast",
+        "en": "Make sure you have enabled social sharing in general settings",
+        "es": "Asegúrate de haber habilitado la opción para compartir en redes sociales en la configuración general.",
+        "fi": "Varmista, että olet ottanut sosiaalisen median jakamisen käyttöön yleisissä asetuksissa",
+        "fr": "Assurez-vous d'avoir activé le partage social dans les paramètres généraux",
+        "it": "Assicurati di aver abilitato la condivisione sui social nelle impostazioni generali",
+        "ja": "一般設定でソーシャルメディアでの共有を有効にしていることを確認してください。",
+        "ko": "일반 설정에서 소셜 공유가 되었는지 확인하십시오.",
+        "nb": "Sørg for at du har aktivert sosial deling i generelle innstillinger",
+        "nl": "Zorg ervoor dat je delen via social media hebt ingeschakeld in de algemene instellingen",
+        "pl": "Upewnij się, że włączyłeś(-aś) udostępnianie w mediach społecznościowych w ustawieniach ogólnych",
+        "pt-BR": "Verifique se você habilitou o compartilhamento em redes sociais nas configurações gerais",
+        "pt-PT": "Certifique-se de que ativou a partilha nas redes sociais nas definições gerais",
+        "sv": "Se till att du har aktiverat social delning i allmänna inställningar",
+        "th": "ตรวจสอบให้แน่ใจว่าคุณได้เปิดใช้การแชร์บนโซเชียลในการตั้งค่าทั่วไป",
+        "tr": "Genel ayarlardan sosyal paylaşımı etkinleştirdiğinizden emin olun",
+        "vi": "Đảm bảo bạn đã bật chia sẻ qua mạng xã hội trong cài đặt chung",
+        "zh-CN": "确保您在“通用”设置中启用了社交分享",
+        "zh-TW": "請確定您已在一般設定內啟用社群分享功能"
+      },
+      "default": true
     }
   ]
 }
