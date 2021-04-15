@@ -1,7 +1,3 @@
-{% unless current_collection == blank %}
-  {% assign current_collection = collection %}
-{% endunless %}
-
 {% assign on_sale = false %}
 {% assign sale_text = 'products.product.sale' | t %}
 {% if featured.compare_at_price > featured.price %}
@@ -22,7 +18,7 @@
 {% endif %}
 
 <div class="{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
-  <a href="{{ featured.url | within: collection }}" class="grid-link{% if section.settings.center_grid_link %} text-center{% endif %}">
+  <a href="{{ featured.url }}" class="grid-link{% if section.settings.center_grid_link %} text-center{% endif %}">
     <span class="grid-link__image grid-link__image--loading{% if section.settings.show_sold_out_circle %} grid-link__image-sold-out{% endif %} grid-link__image--product" data-image-wrapper>
       {% if on_sale and section.settings.show_sale_circle %}
         <span class="badge badge--sale">
