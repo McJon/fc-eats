@@ -231,7 +231,7 @@
   },
   "home_page": {
     "onboarding": {
-      "product_vendor": "Fornecedor de produtos",
+      "product_vendor": "Fabricante de produtos",
       "product_title": "Exemplo de título do produto",
       "blog_title": "Título de seu post",
       "blog_excerpt": "Sua loja ainda não publicou nenhum post no blog. Um blog pode ser usado para falar sobre lançamentos de novos produtos, dicas ou outras novidades que você quer compartilhar com seus clientes. Confira o blog de e-commerce da Shopify para se inspirar e ver dicas para sua própria loja e blog.",
@@ -313,7 +313,7 @@
       "redeem": "Para resgatar o seu cartão-presente, utilize este código no fechamento do pedido",
       "shop_link": "Comece a comprar",
       "print": "Imprimir",
-      "add_to_apple_wallet": "Adicionar ao Apple Wallet"
+      "add_to_apple_wallet": "Adicionar ao app Wallet da Apple"
     }
   }
 }

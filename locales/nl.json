@@ -87,10 +87,10 @@
       "note": "Speciale instructies voor verkoper",
       "subtotal": "Subtotaal",
       "savings_html": "Je bespaart {{ price }}",
-      "taxes_and_shipping_at_checkout": "Belastingen en verzendkosten worden berekend bij het afrekenen",
-      "taxes_and_shipping_policy_at_checkout_html": "Belastingen en <a href=\"{{ link }}\">verzendkosten<\/a> worden berekend bij het afrekenen",
-      "taxes_included_but_shipping_at_checkout": "Belasting inbegrepen en verzendkosten worden berekend bij het afrekenen",
-      "taxes_included_and_shipping_policy_html": "Inclusief belasting. <a href=\"{{ link }}\">Verzendkosten<\/a> worden berekend bij het afrekenen.",
+      "taxes_and_shipping_at_checkout": "Belastingen en verzendkosten worden berekend bij de checkout",
+      "taxes_and_shipping_policy_at_checkout_html": "Belastingen en <a href=\"{{ link }}\">verzendkosten<\/a> worden berekend bij de checkout",
+      "taxes_included_but_shipping_at_checkout": "Belasting inbegrepen en verzendkosten worden berekend bij de checkout",
+      "taxes_included_and_shipping_policy_html": "Inclusief belasting. <a href=\"{{ link }}\">Verzendkosten<\/a> worden berekend bij de checkout.",
       "update": "Winkelwagen bijwerken",
       "checkout": "Afrekenen",
       "empty": "Je winkelwagen is leeg.",
@@ -165,11 +165,11 @@
       "delete_confirm": "Weet je zeker dat je dit adres wilt verwijderen?"
     },
     "login": {
-      "title": "Aanmelden",
+      "title": "Inloggegevens",
       "email": "E-mail",
       "password": "Wachtwoord",
       "forgot_password": "Wachtwoord vergeten?",
-      "sign_in": "Aanmelden",
+      "sign_in": "Inloggen",
       "cancel": "Terug naar winkel",
       "guest_title": "Doorgaan als gast",
       "guest_continue": "Verdergaan"
@@ -256,8 +256,8 @@
     },
     "customer": {
       "account": "Mijn account",
-      "log_out": "Afmelden",
-      "log_in": "Aanmelden",
+      "log_out": "Uitloggen",
+      "log_in": "Inloggen",
       "create_account": "Account aanmaken",
       "or": "of"
     },
@@ -273,7 +273,7 @@
     "general": {
       "from_html": "Vanaf {{ price }}",
       "include_taxes": "Inclusief belasting.",
-      "shipping_policy_html": "<a href=\"{{ link }}\">Verzendkosten<\/a> worden berekend bij het afrekenen.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Verzendkosten<\/a> worden berekend bij de checkout.",
       "share_title": "Deel dit product"
     },
     "product": {
@@ -310,7 +310,7 @@
       "disabled": "Uitgeschakeld",
       "expired": "Verlopen op {{ expiry }}",
       "active": "Verloopt op {{ expiry }}",
-      "redeem": "Gebruik deze code bij het afrekenen om je cadeaubon te verzilveren",
+      "redeem": "Gebruik deze code bij de checkout om je cadeaubon te verzilveren",
       "shop_link": "Ga winkelen",
       "print": "Afdrukken",
       "add_to_apple_wallet": "Aan Apple Wallet toevoegen"

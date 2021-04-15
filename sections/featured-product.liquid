@@ -108,7 +108,7 @@
           <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
           <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
-          <div class="product-single__prices{% if shop.taxes_included or shop.shipping_policy.body != blank %} product-single__prices--policy-enabled{% endif %}">
+          <div class="product-single__prices{% if cart.taxes_included or shop.shipping_policy.body != blank %} product-single__prices--policy-enabled{% endif %}">
             {% if compare_at_price > price %}
               <span id="ComparePriceA11y" class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
             {% else %}
@@ -128,9 +128,9 @@
             {% include 'product-unit-price', variant: variant, available: true %}
           </div>
 
-          {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+          {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
             <div class="product-single__policies{% if product.has_only_default_variant and section.settings.product_quantity_enable == false %} product__policies--no-dropdowns{% endif %} rte">
-              {%- if shop.taxes_included -%}
+              {%- if cart.taxes_included -%}
                 {{ 'products.general.include_taxes' | t }}
               {%- endif -%}
               {%- if shop.shipping_policy.body != blank -%}
@@ -271,7 +271,7 @@
         "nb": "Vis leverandør",
         "nl": "Leverancier weergeven",
         "pl": "Pokaż dostawcę",
-        "pt-BR": "Exibir fornecedor",
+        "pt-BR": "Exibir fabricante",
         "pt-PT": "Mostrar fornecedor",
         "sv": "Visa säljare",
         "th": "แสดงผู้ขาย",
@@ -507,7 +507,7 @@
         "ja": "動的チェックアウトボタンを表示する",
         "ko": "동적 결제 버튼 표시",
         "nb": "Vis dynamisk knapp for å gå til kassen",
-        "nl": "Dynamische betaalknop weergeven",
+        "nl": "Dynamische checkoutknop weergeven",
         "pl": "Pokaż dynamiczny przycisk realizacji zakupu",
         "pt-BR": "Exibir botão de checkout dinâmico",
         "pt-PT": "Mostrar o botão dinâmico de finalização da compra",
@@ -567,7 +567,7 @@
         "tr": "Varyasyon seçici ve düğme boyutu",
         "vi": "Trình chọn mẫu mã và cỡ nút",
         "zh-CN": "多属性选择器和按钮大小",
-        "zh-TW": "子類選項選擇器和按鈕尺寸"
+        "zh-TW": "子類選擇器和按鈕尺寸"
       },
       "default": "small",
       "options": [
